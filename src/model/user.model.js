@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Role } from "../service/message.js";
-
+import bcrypt from "bcryptjs";
+import { SECRET_KEY } from "../config/globalKey.js";
 const userSchema = mongoose.Schema(
   {
     username: {
@@ -32,6 +33,21 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.pre("save", function (next) {
+  let user = this;
+  if (user.isModified("password")) {
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) return next();
+      bcrypt.hash(`${user.password + SECRET_KEY}`, salt, (err, hash) => {
+        if (err) return next();
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    next();
+  }
+});
 const User = mongoose.model("user", userSchema);
 
 export default User;
