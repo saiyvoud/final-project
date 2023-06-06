@@ -10,10 +10,15 @@ export const Status = {
 }
 export const SMessage = {
     Register: "Register Success",
-    Login: "Login Success"
+    Login: "Login Success",
+    Update: "Update Success",
+    SelOne: "Select One Success",
+    SelAll: "Select All Success",
+
 }
 export const EMessage = {
     NotFound: "Not Found",
     Unauthorization: "Unauthorization!",
-    PleaseInput: "Please input:"
+    PleaseInput: "Please input:",
+    FaildServer: "Faild Server",
 }

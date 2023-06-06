@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+import { uploadImageServer } from "../config/uploadImageServer.js";
+import UploadImage from "../config/uploadImage.js";
 import Models from "../model/index.js";
 import { EMessage, SMessage } from "../service/message.js";
 import {
@@ -12,9 +15,149 @@ import {
   ComparePassword,
   GeneraterPassword,
 } from "../service/service.js";
-import { ValidateRegister, ValidateLogin,ValidateForget } from "../service/validate.js";
+import {
+  ValidateRegister,
+  ValidateLogin,
+  ValidateForget,
+  ValidateChangePassword,
+  ValidateUpdateProfile,
+  ValidateUpdateProfileImage
+} from "../service/validate.js";
 
 export default class UserController {
+  static async updateProfile(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return SendError404(res, EMessage.NotFound + "User ID");
+      }
+      const validate = ValidateUpdateProfile(req.body);
+      if (validate.length > 0) {
+        return SendError400(res, EMessage.PleaseInput + validate.join(","));
+      }
+      const { username, email } = req.body;
+      const user = await Models.User.findByIdAndUpdate(
+        userId,
+        {
+          username,
+          email,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, user);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async updateProfileImageCloud(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return SendError404(res, EMessage.NotFound + "User ID");
+      }
+      const validate = ValidateUpdateProfileImage(req.body);
+      if (validate.length > 0) {
+        return SendError400(res, EMessage.PleaseInput + validate.join(","));
+      }
+      const { oldImage, image } = req.body;
+      const imageUrl = await UploadImage(oldImage,image);
+      console.log(imageUrl);
+      if(!imageUrl){
+        return SendError404(res,"Base64")
+      }
+      const user = await Models.User.findByIdAndUpdate(
+        userId,
+        {
+          profile: imageUrl,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, user);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async updateProfileImageServer(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return SendError404(res, EMessage.NotFound + "User ID");
+      }
+      const validate = ValidateUpdateProfileImage(req.body);
+      if (validate.length > 0) {
+        return SendError400(res, EMessage.PleaseInput + validate.join(","));
+      }
+      const { oldImage, image } = req.body;
+      const imageUrl = await uploadImageServer(oldImage, image);
+
+      const user = await Models.User.findByIdAndUpdate(
+        userId,
+        {
+          profile: imageUrl,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, user);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async getProfile(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return SendError404(res, EMessage.NotFound);
+      }
+      const user = await Models.User.findOne({ isActive: true, _id: userId });
+      return SendSuccess(res, SMessage.SelOne, user);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async getAll(req, res) {
+    try {
+      const user = await Models.User.find({ isActive: true });
+      return SendSuccess(res, SMessage.SelAll, user);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async changePassword(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return SendError404(res, EMessage.NotFound + "User ID");
+      }
+      const { oldPassword, newPassword } = req.body;
+      const validate = ValidateChangePassword(req.body);
+      if (validate.length > 0) {
+        return SendError400(res, EMessage.PleaseInput + validate.join(","));
+      }
+      const userExit = await Models.User.findById(userId);
+      const isMacth = await ComparePassword(oldPassword, userExit.password);
+      if (!isMacth) {
+        return SendError400(res, "Not Match Password");
+      }
+      const password = await GeneraterPassword(newPassword);
+
+      const user = await Models.User.findByIdAndUpdate(
+        userId,
+        {
+          password,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, user);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
   static async forget(req, res) {
     try {
       const validate = ValidateForget(req.body);

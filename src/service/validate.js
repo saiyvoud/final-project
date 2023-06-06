@@ -10,6 +10,18 @@ export const ValidateLogin = (user) => {
   return ValidateData({ email, password });
 };
 export const ValidateForget = (user) => {
-    const { email, newpassword } = user;
-    return ValidateData({ email, newpassword });
-  };
+  const { email, newpassword } = user;
+  return ValidateData({ email, newpassword });
+};
+export const ValidateChangePassword = (user) => {
+  const { oldPassword, newPassword } = user;
+  return ValidateData({ oldPassword, newPassword });
+};
+export const ValidateUpdateProfile = (user) => {
+  const { username, email } = user;
+  return ValidateData({ username, email });
+};
+export const ValidateUpdateProfileImage = (user) => {
+  const {  image } = user;
+  return ValidateData({  image  });
+};
