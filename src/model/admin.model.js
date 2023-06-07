@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcryptjs"
 const adminSchema = mongoose.Schema(
   {
     username: {
@@ -13,6 +13,7 @@ const adminSchema = mongoose.Schema(
     },
     password: {
       type: String,
+      require: true,
     },
     profile: {
       type: String,
@@ -25,6 +26,7 @@ const adminSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
 
 const Admin = mongoose.model("admin", adminSchema);
 

@@ -24,7 +24,7 @@ import {
   ValidateUpdateProfileImage,ValidateRefreshToken
 } from "../service/validate.js";
 
-export default class UserController {
+export default class AdminController {
   static async RefreshToken(req,res){
     try {
       const validate = ValidateRefreshToken(req.body);
@@ -44,17 +44,17 @@ export default class UserController {
   }
   static async updateProfile(req, res) {
     try {
-      const userId = req.params.userId;
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return SendError404(res, EMessage.NotFound + "User ID");
+      const adminId = req.params.adminId;
+      if (!mongoose.Types.ObjectId.isValid(adminId)) {
+        return SendError404(res, EMessage.NotFound + "admin ID");
       }
       const validate = ValidateUpdateProfile(req.body);
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
       const { username, email } = req.body;
-      const user = await Models.User.findByIdAndUpdate(
-        userId,
+      const user = await Models.Admin.findByIdAndUpdate(
+        adminId,
         {
           username,
           email,
@@ -69,8 +69,8 @@ export default class UserController {
   }
   static async updateProfileImageCloud(req, res) {
     try {
-      const userId = req.params.userId;
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
+      const adminId = req.params.adminId;
+      if (!mongoose.Types.ObjectId.isValid(adminId)) {
         return SendError404(res, EMessage.NotFound);
       }
       const validate = ValidateUpdateProfileImage(req.body);
@@ -82,8 +82,8 @@ export default class UserController {
       if(!imageUrl){
         return SendError404(res,"Base64")
       }
-      const user = await Models.User.findByIdAndUpdate(
-        userId,
+      const user = await Models.Admin.findByIdAndUpdate(
+        adminId,
         {
           profile: imageUrl,
         },
@@ -97,8 +97,8 @@ export default class UserController {
   }
   static async updateProfileImageServer(req, res) {
     try {
-      const userId = req.params.userId;
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
+      const adminId = req.params.adminId;
+      if (!mongoose.Types.ObjectId.isValid(adminId)) {
         return SendError404(res, EMessage.NotFound + "User ID");
       }
       const validate = ValidateUpdateProfileImage(req.body);
@@ -108,8 +108,8 @@ export default class UserController {
       const { oldImage, image } = req.body;
       const imageUrl = await uploadImageServer(oldImage, image);
 
-      const user = await Models.User.findByIdAndUpdate(
-        userId,
+      const user = await Models.Admin.findByIdAndUpdate(
+        adminId,
         {
           profile: imageUrl,
         },
@@ -123,11 +123,11 @@ export default class UserController {
   }
   static async getProfile(req, res) {
     try {
-      const userId = req.params.userId;
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
+      const adminId = req.params.adminId;
+      if (!mongoose.Types.ObjectId.isValid(adminId)) {
         return SendError404(res, EMessage.NotFound);
       }
-      const user = await Models.User.findOne({ isActive: true, _id: userId });
+      const user = await Models.Admin.findOne({ isActive: true, _id: adminId });
       return SendSuccess(res, SMessage.SelOne, user);
     } catch (error) {
       console.log(error);
@@ -136,7 +136,7 @@ export default class UserController {
   }
   static async getAll(req, res) {
     try {
-      const user = await Models.User.find({ isActive: true });
+      const user = await Models.Admin.find({ isActive: true });
       return SendSuccess(res, SMessage.SelAll, user);
     } catch (error) {
       console.log(error);
@@ -145,8 +145,8 @@ export default class UserController {
   }
   static async changePassword(req, res) {
     try {
-      const userId = req.params.userId;
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
+      const adminId = req.params.adminId;
+      if (!mongoose.Types.ObjectId.isValid(adminId)) {
         return SendError404(res, EMessage.NotFound + "User ID");
       }
       const { oldPassword, newPassword } = req.body;
@@ -154,15 +154,15 @@ export default class UserController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const userExit = await Models.User.findById(userId);
+      const userExit = await Models.Admin.findById(adminId);
       const isMacth = await ComparePassword(oldPassword, userExit.password);
       if (!isMacth) {
         return SendError400(res, "Not Match Password");
       }
       const password = await GeneraterPassword(newPassword);
 
-      const user = await Models.User.findByIdAndUpdate(
-        userId,
+      const user = await Models.Admin.findByIdAndUpdate(
+        adminId,
         {
           password,
         },
@@ -184,7 +184,7 @@ export default class UserController {
       if (!email) {
         return SendError400(res, "email is require!");
       }
-      const emailExit = await Models.User.findOne({ isActive: true, email });
+      const emailExit = await Models.Admin.findOne({ isActive: true, email });
       if (!emailExit) {
         return SendError404(res, "Not Found Email");
       }
@@ -192,7 +192,7 @@ export default class UserController {
       if (!newPassword) {
         return SendError404(res, "Error GeneratePassword");
       }
-      const user = await Models.User.findByIdAndUpdate(
+      const user = await Models.Admin.findByIdAndUpdate(
         emailExit._id,
         {
           password: newPassword,
@@ -211,28 +211,28 @@ export default class UserController {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
       const { username, email, password } = req.body;
-      const emailExit = await Models.User.findOne({ isActive: true, email });
+      const emailExit = await Models.Admin.findOne({ isActive: true, email });
       if (emailExit) {
         return SendError400(res, "Already is email");
       }
-      const user = new Models.User({
+      const hashPassword = await GeneraterPassword(password);
+      const admin = await Models.Admin.create({
         username,
         email,
-        password,
+        password: hashPassword,
       });
-      console.log(user);
-      await user.save();
-      const token = await GenerateToken(user);
+      const token = await GenerateToken(admin);
       if (!token) {
         return SendError400(res, "Token Faild!", token);
       }
       const data = Object.assign(
-        JSON.parse(JSON.stringify(user)),
+        JSON.parse(JSON.stringify(admin)),
         JSON.parse(JSON.stringify(token))
       );
 
       return SendCreate(res, SMessage.Register, data);
     } catch (error) {
+        console.log(error);
       return SendError500(res, "Error Register", error);
     }
   }
@@ -243,7 +243,7 @@ export default class UserController {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
       const { email, password } = req.body;
-      const emailExit = await Models.User.findOne({ isActive: true, email });
+      const emailExit = await Models.Admin.findOne({ isActive: true, email });
       if (!emailExit) {
         return SendError404(res, "Not Found Email");
       }

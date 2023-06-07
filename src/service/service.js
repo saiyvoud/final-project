@@ -6,14 +6,56 @@ import fs from "fs";
 import sharp from "sharp";
 import path from "path";
 import { fileURLToPath } from "url";
+import Models from "../model/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+export const VerifyRefreshToken = (token, refreshToken) => {
+  return new Promise(async (resovle, reject) => {
+    try {
+      jwt.verify(refreshToken, SECRET_KEY, async function (err, decoded) {
+        if (err) return reject(err);
+        if (decoded.token == token) {
+          const data = await GenerateToken(decoded);
+          resovle(data);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      resovle(false);
+    }
+  });
+};
+
 export const VerifyToken = (token) => {
   return new Promise(async (resovle, reject) => {
     try {
-      jwt.verify(token, SECRET_KEY, function (error, decoded) {
+      jwt.verify(token, SECRET_KEY, async function (error, decoded) {
         if (error) return reject(error);
-        resovle(decoded);
+        const user = await Models.User.findOne({
+          _id: decoded._id,
+          email: decoded.email,
+          isActive: true,
+        });
+        resovle(user);
+      });
+    } catch (error) {
+      console.log(error);
+      resovle(false);
+    }
+  });
+};
+export const VerifyTokenAdmin = (token) => {
+  return new Promise(async (resovle, reject) => {
+    try {
+      jwt.verify(token, SECRET_KEY, async function (error, decoded) {
+        if (error) return reject(error);
+        const admin = await Models.Admin.findOne({
+          _id: decoded._id,
+          email: decoded.email,
+          isActive: true,
+        });
+        resovle(admin);
       });
     } catch (error) {
       console.log(error);

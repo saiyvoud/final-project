@@ -11,7 +11,9 @@ export const Status = {
 export const SMessage = {
     Register: "Register Success",
     Login: "Login Success",
+    Create: "Create Success",
     Update: "Update Success",
+    Delete: "Delete Success",
     SelOne: "Select One Success",
     SelAll: "Select All Success",
 
@@ -21,4 +23,5 @@ export const EMessage = {
     Unauthorization: "Unauthorization!",
     PleaseInput: "Please input:",
     FaildServer: "Faild Server",
+    Already: "Already is ",
 }
