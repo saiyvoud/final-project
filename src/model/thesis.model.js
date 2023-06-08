@@ -3,9 +3,6 @@ import { Status } from "../service/message.js";
 
 const thesisSchema = mongoose.Schema(
   {
-    scheduleDate: {
-      type: String,
-    },
     scoringId: {
       type: Array,
     },

@@ -6,6 +6,10 @@ const classSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    department: {
+      type: String,
+      require: true,
+    },
     isActive: {
       type: Boolean,
       default: true,

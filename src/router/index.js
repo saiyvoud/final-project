@@ -1,7 +1,10 @@
 import express from "express";
 import AdminController from "../controller/admin.controller.js";
+import ClassController from "../controller/class.controller.js";
 import CommitteeController from "../controller/committee.controller.js";
+import ScheduleController from "../controller/schedule.controller.js";
 import StudentController from "../controller/student.controller.js";
+import ThesisController from "../controller/thesis.controller.js";
 import UserController from "../controller/user.controller.js";
 import { auth, auth_admin } from "../middleware/auth.js";
 const router = express.Router();
@@ -39,5 +42,22 @@ router.put("/admin/changePassword/:adminId",auth_admin,AdminController.changePas
 router.put("/admin/updateProfile/:adminId",auth_admin,AdminController.updateProfile);
 router.put("/admin/updateProfileImageToCloud/:adminId",auth_admin,AdminController.updateProfileImageCloud);
 router.put("/admin/updateProfileImageToServer/:adminId",auth_admin,AdminController.updateProfileImageServer);
-
+// ------------ class room -------
+router.get("/class/getOne/:classId",auth_admin,ClassController.getOne);
+router.get("/class/getAll",auth_admin,ClassController.getAll);
+router.post("/class/insert",auth_admin, ClassController.insert);
+router.put("/class/update/:classId",auth_admin,ClassController.updateClass);
+router.put("/class/delete/:classId",auth_admin,ClassController.deleteClass);
+// ------------ schedule -------
+router.get("/schedule/getOne/:scheduleId",auth_admin,ScheduleController.getOne);
+router.get("/schedule/getAll",auth_admin,ScheduleController.getAll);
+router.post("/schedule/insert",auth_admin, ScheduleController.insert);
+router.put("/schedule/update/:scheduleId",auth_admin,ScheduleController.updateSchedule);
+router.put("/schedule/delete/:scheduleId",auth_admin,ScheduleController.deleteSchedule);
+// -------------- thesis ------
+router.get("/thesis/getOne/:thesisId",auth,ThesisController.getOne);
+router.get("/thesis/getAll",auth,ThesisController.getAll);
+router.post("/thesis/insert",auth, ThesisController.insert);
+router.put("/thesis/update/:thesisId",auth,ThesisController.updateThesis);
+router.put("/thesis/delete/:thesisId",auth,ThesisController.deleteThesis);
 export default router;

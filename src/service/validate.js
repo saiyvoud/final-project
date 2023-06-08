@@ -48,3 +48,30 @@ export const ValidateUpdateCommittee = (committee) => {
   const { committeeID,committeeName,committeeDescription,committeeChair, } = committee;
   return ValidateData({ committeeID,committeeName,committeeDescription,committeeChair, });
 };
+// ----------- class room ---------
+export const ValidateClass = (classRoom) => {
+  const { room, department } = classRoom;
+  return ValidateData({ room,department });
+};
+export const ValidateUpdateClass = (classRoom) => {
+  const { room, department } = classRoom;
+  return ValidateData({ room,department });
+};
+// --------- schedule -------
+export const ValidateSchedule = (schedule) => {
+  const {   scheduleDate,scheduleLocation, committeeId,thesisId,classId, } = schedule;
+  return ValidateData({   scheduleDate,scheduleLocation, committeeId,thesisId,classId, });
+};
+export const ValidateUpdateSchedule = (schedule) => {
+  const {   scheduleDate,scheduleLocation, committeeId,thesisId,classId, } = schedule;
+  return ValidateData({   scheduleDate,scheduleLocation, committeeId,thesisId,classId, });
+};
+// ---------- thesis --------
+export const ValidateThesis = (thesis) => {
+  const { scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, } = thesis;
+  return ValidateData({ scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, });
+};
+export const ValidateUpdateThesis = (thesis) => {
+  const { scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, } = thesis;
+  return ValidateData({ scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, });
+};
