@@ -2,9 +2,6 @@ import mongoose from "mongoose";
 
 const scoringSchema = mongoose.Schema(
   {
-    scheduleDate: {
-      type: String,
-    },
     thesisMemberId: {
       type: mongoose.Types.ObjectId,
       ref: "thesisMembers",

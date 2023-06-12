@@ -2,9 +2,12 @@ import express from "express";
 import AdminController from "../controller/admin.controller.js";
 import ClassController from "../controller/class.controller.js";
 import CommitteeController from "../controller/committee.controller.js";
+import ResourceCodeController from "../controller/resourceCode.controller.js";
 import ScheduleController from "../controller/schedule.controller.js";
+import ScoringController from "../controller/scoring.controller.js";
 import StudentController from "../controller/student.controller.js";
 import ThesisController from "../controller/thesis.controller.js";
+import ThesisMemberController from "../controller/thesisMember.controllr.js";
 import UserController from "../controller/user.controller.js";
 import { auth, auth_admin } from "../middleware/auth.js";
 const router = express.Router();
@@ -60,4 +63,22 @@ router.get("/thesis/getAll",auth,ThesisController.getAll);
 router.post("/thesis/insert",auth, ThesisController.insert);
 router.put("/thesis/update/:thesisId",auth,ThesisController.updateThesis);
 router.put("/thesis/delete/:thesisId",auth,ThesisController.deleteThesis);
+// -------------- thesisMember ------
+router.get("/thesisMember/getOne/:thesisMemberId",auth,ThesisMemberController.getOne);
+router.get("/thesisMember/getAll",auth,ThesisMemberController.getAll);
+router.post("/thesisMember/insert",auth, ThesisMemberController.insert);
+router.put("/thesisMember/update/:thesisMemberId",auth,ThesisMemberController.updateThesisMember);
+router.put("/thesisMember/delete/:thesisMemberId",auth,ThesisMemberController.deleteThesisMember);
+// -------------- scoring ------
+router.get("/scoring/getOne/:scoringId",auth,ScoringController.getOne);
+router.get("/scoring/getAll",auth,ScoringController.getAll);
+router.post("/scoring/insert",auth, ScoringController.insert);
+router.put("/scoring/update/:scoringId",auth,ScoringController.updateScoring);
+router.put("/scoring/delete/:scoringId",auth,ScoringController.deleteScoring);
+// -------------- resourceCode ------
+router.get("/resourceCode/getOne/:resourceCodeId",auth,ResourceCodeController.getOne);
+router.get("/resourceCode/getAll",auth,ResourceCodeController.getAll);
+router.post("/resourceCode/insert",auth, ResourceCodeController.insert);
+router.put("/resourceCode/update/:resourceCodeId",auth,ResourceCodeController.updateResourceCode);
+router.put("/resourceCode/delete/:resourceCodeId",auth,ResourceCodeController.deleteResourceCode);
 export default router;

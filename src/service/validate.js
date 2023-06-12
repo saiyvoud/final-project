@@ -75,3 +75,18 @@ export const ValidateUpdateThesis = (thesis) => {
   const { scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, } = thesis;
   return ValidateData({ scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, });
 };
+// ---------- thesisMember --------
+export const ValidateThesisMember = (thesisMember) => {
+  const { memberId,thesisId,committeeId } = thesisMember;
+  return ValidateData({  memberId,thesisId,committeeId });
+};
+// ---------- scoring --------
+export const ValidateScoring = (scoring) => {
+  const { thesisMemberId,title,point } = scoring;
+  return ValidateData({  thesisMemberId,title,point });
+};
+// ---------- resource --------
+export const ValidateResourceCode = (scoring) => {
+  const { thesisId,fileCode } = scoring;
+  return ValidateData({ thesisId,fileCode });
+};
