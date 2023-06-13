@@ -82,8 +82,8 @@ export const ValidateThesisMember = (thesisMember) => {
 };
 // ---------- scoring --------
 export const ValidateScoring = (scoring) => {
-  const { thesisMemberId,title,point } = scoring;
-  return ValidateData({  thesisMemberId,title,point });
+  const { /*thesisMemberId ,*/title,point } = scoring;
+  return ValidateData({  /*thesisMemberId ,*/title,point });
 };
 // ---------- resource --------
 export const ValidateResourceCode = (scoring) => {

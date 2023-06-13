@@ -41,12 +41,12 @@ export default class ScoringController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const { thesisMemberId, title, point } = req.body;
-      if (!mongoose.Types.ObjectId.isValid(thesisMemberId)) {
-        return SendError404(res, EMessage.NotFound + " thesisMemberId");
-      }
+      const { /*thesisMemberId ,*/  title, point } = req.body;
+    //   if (!mongoose.Types.ObjectId.isValid(thesisMemberId)) {
+    //     return SendError404(res, EMessage.NotFound + " thesisMemberId");
+    //   }
       const scoring = await Models.Scoring.create({
-        thesisMemberId,
+        // thesisMemberId,
         title,
         point,
       });
@@ -66,11 +66,11 @@ export default class ScoringController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const { thesisMemberId, title, point } = req.body;
+      const { /*thesisMemberId ,*/ title, point } = req.body;
       const scoring = await Models.Scoring.findByIdAndUpdate(
         scoringId,
         {
-          thesisMemberId,
+          /*thesisMemberId ,*/
           title,
           point,
         },
