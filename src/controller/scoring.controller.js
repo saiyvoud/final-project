@@ -8,6 +8,7 @@ import {
   SendError500,
   SendSuccess,
 } from "../service/response.js";
+import {  UpdateThesis } from "../service/service.js";
 import { ValidateScoring } from "../service/validate.js";
 export default class ScoringController {
   static async getOne(req, res) {
@@ -41,15 +42,22 @@ export default class ScoringController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const { /*thesisMemberId ,*/  title, point } = req.body;
-    //   if (!mongoose.Types.ObjectId.isValid(thesisMemberId)) {
-    //     return SendError404(res, EMessage.NotFound + " thesisMemberId");
-    //   }
+      const { thesisId, title, point } = req.body;
+      if (!mongoose.Types.ObjectId.isValid(thesisId)) {
+        return SendError404(res, EMessage.NotFound + " thesisId");
+      }
       const scoring = await Models.Scoring.create({
-        // thesisMemberId,
+        thesisId,
         title,
         point,
       });
+      // await Models.Thesis.findByIdAndUpdate(thesisId,{
+      //   scoringId: scoring._id,
+      // });
+      const isMacth = await UpdateThesis(thesisId, scoring._id);
+      if (!isMacth) {
+        return SendError404(res, "Error Update Thesis");
+      }
       return SendCreate(res, SMessage.Create, scoring);
     } catch (error) {
       console.log(error);

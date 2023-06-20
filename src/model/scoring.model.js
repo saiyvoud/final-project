@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const scoringSchema = mongoose.Schema(
   {
-    // thesisMemberId: {
-    //   type: mongoose.Types.ObjectId,
-    //   ref: "thesisMembers",
-    // },
+    thesisId: {
+      type: mongoose.Types.ObjectId,
+      ref: "thesis",
+    },
     title: {
       type: String,
       require: true,

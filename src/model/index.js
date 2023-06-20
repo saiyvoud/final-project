@@ -8,6 +8,8 @@ import Class from "./class.model.js";
 import Thesis from "./thesis.model.js";
 import Scoring from "./scoring.model.js";
 import ResourceCode from "./resourceCode.model.js";
+import Time from "./time.model.js";
+import Major from "./major.model.js";
 const Models = {
   User,
   Student,
@@ -19,5 +21,7 @@ const Models = {
   Thesis,
   Scoring,
   ResourceCode,
+  Time,
+  Major,
 }
 export default Models;

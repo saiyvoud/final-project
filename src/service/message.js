@@ -4,6 +4,7 @@ export const Role = {
     admin: "admin",
 }
 export const Status = {
+    cancel: "ບໍ່ຜ່ານ",
     edit: "ໃຫ້ຜ່ານແຕ່ແກ້ໄຂ-ປັບປຸງ",
     complete: "ໃຫ້ຜ່ານ",
     mission: "ໃຫ້ປັບປຸງ ແລະ ປ້ອງກັນຮອບສອງ"
@@ -16,7 +17,6 @@ export const SMessage = {
     Delete: "Delete Success",
     SelOne: "Select One Success",
     SelAll: "Select All Success",
-
 }
 export const EMessage = {
     NotFound: "Not Found",
@@ -24,4 +24,5 @@ export const EMessage = {
     PleaseInput: "Please input:",
     FaildServer: "Faild Server",
     Already: "Already is ",
+    FaildUpload: "Faild Upload",
 }

@@ -10,6 +10,24 @@ import Models from "../model/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+export const UpdateThesis = (thesisId, scoringId) => {
+  return new Promise(async (resovle, reject) => {
+    try {
+      const isMacth = await Models.Thesis.findById(thesisId);
+      if (!isMacth) {
+        reject("Not Found ThesisId");
+      }
+      const thesis = await Models.Thesis.findByIdAndUpdate(
+        thesisId,
+        { $push: { scoringId: scoringId } }, // set
+        { new: true }
+      );
+      return resovle(thesis);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 export const VerifyRefreshToken = (token, refreshToken) => {
   return new Promise(async (resovle, reject) => {
     try {

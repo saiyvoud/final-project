@@ -50,8 +50,8 @@ export const ValidateUpdateCommittee = (committee) => {
 };
 // ----------- class room ---------
 export const ValidateClass = (classRoom) => {
-  const { room, department } = classRoom;
-  return ValidateData({ room,department });
+  const { majorId, room } = classRoom;
+  return ValidateData({ majorId,room });
 };
 export const ValidateUpdateClass = (classRoom) => {
   const { room, department } = classRoom;
@@ -68,8 +68,8 @@ export const ValidateUpdateSchedule = (schedule) => {
 };
 // ---------- thesis --------
 export const ValidateThesis = (thesis) => {
-  const { scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, } = thesis;
-  return ValidateData({ scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, });
+  const { studentID,studentName,memberID,memberName,thesisTitle,thesisDetail,thesisAbstract,thesisFile, } = thesis;
+  return ValidateData({ studentID,studentName,memberID,memberName,thesisTitle,thesisDetail,thesisAbstract,thesisFile, });
 };
 export const ValidateUpdateThesis = (thesis) => {
   const { scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, } = thesis;
@@ -86,7 +86,17 @@ export const ValidateScoring = (scoring) => {
   return ValidateData({  /*thesisMemberId ,*/title,point });
 };
 // ---------- resource --------
-export const ValidateResourceCode = (scoring) => {
-  const { thesisId,fileCode } = scoring;
+export const ValidateResourceCode = (resource) => {
+  const { thesisId,fileCode } = resource;
   return ValidateData({ thesisId,fileCode });
+};
+// --------- time -------
+export const ValidateTime = (time) => {
+  const { major,room } = time;
+  return ValidateData({ major,room });
+};
+// --------- major -------
+export const ValidateMajor = (major) => {
+  const { fullname,nickname } = major;
+  return ValidateData({ fullname,nickname });
 };

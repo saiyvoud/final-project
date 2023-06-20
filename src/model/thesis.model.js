@@ -5,9 +5,31 @@ const thesisSchema = mongoose.Schema(
   {
     scoringId: {
       type: Array,
+      default: ""
     },
-    studentId: {
-      type: Array,
+    classId: {
+      type: String,
+      default: ""
+    },
+    timeId: {
+      type: String,
+      default: ""
+    },
+    studentID: {
+      type: String,
+      require: true,
+    },
+    studentName: {
+      type: String,
+      require: true,
+    },
+    memberID: {
+      type: String,
+      require: true,
+    },
+    memberName: {
+      type: String,
+      require: true,
     },
     thesisTitle: {
       type: String,
@@ -24,7 +46,7 @@ const thesisSchema = mongoose.Schema(
     thesisStatus: {
       type: String,
       enum: Object.values(Status),
-      default: Status.edit,
+      default: Status.cancel,
     },
     thesisDetail: {
       type: String,

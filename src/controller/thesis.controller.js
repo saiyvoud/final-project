@@ -6,6 +6,7 @@ import {
   SendError400,
   SendError404,
   SendError500,
+  SendSuccess,
 } from "../service/response.js";
 import { ValidateThesis, ValidateUpdateThesis } from "../service/validate.js";
 export default class ThesisController {
@@ -18,9 +19,7 @@ export default class ThesisController {
       const thesis = await Models.Thesis.findOne({
         isActive: true,
         _id: thesisId,
-      }).populate({
-        path: "scoringId studentId",
-      });
+      })
       return SendSuccess(res, SMessage.getOne, thesis);
     } catch (error) {
       console.log(error);
@@ -31,9 +30,7 @@ export default class ThesisController {
     try {
       const thesis = await Models.Thesis.find({
         isActive: true,
-      }).populate({
-        path: "scoringId studentId",
-      });
+      })
       return SendSuccess(res, SMessage.getAll, thesis);
     } catch (error) {
       console.log(error);
@@ -47,32 +44,26 @@ export default class ThesisController {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
       const {
-        scoringId,
-        studentId,
+        studentID,
+        studentName,
+        memberID,
+        memberName,
         thesisTitle,
         thesisDetail,
         thesisAbstract,
         thesisFile,
-        thesisStatus,
       } = req.body;
-      if (
-        !mongoose.Types.ObjectId.isValid(scoringId) ||
-        !mongoose.Types.ObjectId.isValid(studentId)
-      ) {
-        return SendError404(res, EMessage.NotFound + " scoringId , studentId");
-      }
-      const status = Object.values(Status);
-      if (!status.includes(thesisStatus)) {
-        return SendError400(res, "Error Status Thesis");
-      }
+     
+
       const thesis = await Models.Thesis.create({
-        scoringId,
-        studentId,
+        studentID,
+        studentName,
+        memberID,
+        memberName,
         thesisTitle,
         thesisDetail,
         thesisAbstract,
         thesisFile,
-        thesisStatus,
       });
       return SendCreate(res, SMessage.Create, thesis);
     } catch (error) {
@@ -92,18 +83,18 @@ export default class ThesisController {
       }
       const {
         scoringId,
-        studentId,
+        studentID,
+        studentName,
+        memberID,
+        memberName,
         thesisTitle,
         thesisDetail,
         thesisAbstract,
         thesisFile,
         thesisStatus,
       } = req.body;
-      if (
-        !mongoose.Types.ObjectId.isValid(scoringId) ||
-        !mongoose.Types.ObjectId.isValid(studentId)
-      ) {
-        return SendError404(res, EMessage.NotFound + " scoringId , studentId");
+      if (!mongoose.Types.ObjectId.isValid(scoringId)) {
+        return SendError404(res, EMessage.NotFound + " scoringId");
       }
       const status = Object.values(Status);
       if (!status.includes(thesisStatus)) {
@@ -113,7 +104,10 @@ export default class ThesisController {
         thesisId,
         {
           scoringId,
-          studentId,
+          studentID,
+          studentName,
+          memberID,
+          memberName,
           thesisTitle,
           thesisDetail,
           thesisAbstract,
@@ -128,6 +122,34 @@ export default class ThesisController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+  static async updateClassAndTime(req, res) {
+    try {
+      const thesisId = req.params.thesisId;
+      if (!mongoose.Types.ObjectId.isValid(thesisId)) {
+        return SendError404(res, EMessage.NotFound + " ThesisId");
+      }
+      const { classId, timeId } = req.body;
+      if (
+        !mongoose.Types.ObjectId.isValid(classId) ||
+        !mongoose.Types.ObjectId.isValid(timeId)
+      ) {
+        return SendError404(res, EMessage.NotFound + " classId, timeId");
+      }
+      const thesis = await Models.Thesis.findByIdAndUpdate(
+        thesisId,
+        {
+          classId,
+          timeId,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, thesis);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+
   static async deleteThesis(req, res) {
     try {
       const thesisId = req.params.thesisId;

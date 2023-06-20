@@ -6,6 +6,10 @@ const classSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    majorId: {
+      type: mongoose.Types.ObjectId,
+      require: true,
+    },
     department: {
       type: String,
       require: true,

@@ -2,12 +2,14 @@ import express from "express";
 import AdminController from "../controller/admin.controller.js";
 import ClassController from "../controller/class.controller.js";
 import CommitteeController from "../controller/committee.controller.js";
+import MajorController from "../controller/major.controller.js";
 import ResourceCodeController from "../controller/resourceCode.controller.js";
 import ScheduleController from "../controller/schedule.controller.js";
 import ScoringController from "../controller/scoring.controller.js";
 import StudentController from "../controller/student.controller.js";
 import ThesisController from "../controller/thesis.controller.js";
 import ThesisMemberController from "../controller/thesisMember.controllr.js";
+import TimeController from "../controller/time.controller.js";
 import UserController from "../controller/user.controller.js";
 import { auth, auth_admin } from "../middleware/auth.js";
 const router = express.Router();
@@ -46,11 +48,11 @@ router.put("/admin/updateProfile/:adminId",auth_admin,AdminController.updateProf
 router.put("/admin/updateProfileImageToCloud/:adminId",auth_admin,AdminController.updateProfileImageCloud);
 router.put("/admin/updateProfileImageToServer/:adminId",auth_admin,AdminController.updateProfileImageServer);
 // ------------ class room -------
-router.get("/class/getOne/:classId",auth_admin,ClassController.getOne);
-router.get("/class/getAll",auth_admin,ClassController.getAll);
-router.post("/class/insert",auth_admin, ClassController.insert);
-router.put("/class/update/:classId",auth_admin,ClassController.updateClass);
-router.put("/class/delete/:classId",auth_admin,ClassController.deleteClass);
+router.get("/class/getOne/:classId",auth,ClassController.getOne);
+router.get("/class/getAll",auth,ClassController.getAll);
+router.post("/class/insert",auth, ClassController.insert);
+router.put("/class/update/:classId",auth,ClassController.updateClass);
+router.put("/class/delete/:classId",auth,ClassController.deleteClass);
 // ------------ schedule -------
 router.get("/schedule/getOne/:scheduleId",auth_admin,ScheduleController.getOne);
 router.get("/schedule/getAll",auth_admin,ScheduleController.getAll);
@@ -62,6 +64,7 @@ router.get("/thesis/getOne/:thesisId",auth,ThesisController.getOne);
 router.get("/thesis/getAll",auth,ThesisController.getAll);
 router.post("/thesis/insert",auth, ThesisController.insert);
 router.put("/thesis/update/:thesisId",auth,ThesisController.updateThesis);
+router.put("/thesis/updateAll/:thesisId",auth,ThesisController.updateClassAndTime);
 router.put("/thesis/delete/:thesisId",auth,ThesisController.deleteThesis);
 // -------------- thesisMember ------
 router.get("/thesisMember/getOne/:thesisMemberId",auth,ThesisMemberController.getOne);
@@ -81,4 +84,16 @@ router.get("/resourceCode/getAll",auth,ResourceCodeController.getAll);
 router.post("/resourceCode/insert",auth, ResourceCodeController.insert);
 router.put("/resourceCode/update/:resourceCodeId",auth,ResourceCodeController.updateResourceCode);
 router.put("/resourceCode/delete/:resourceCodeId",auth,ResourceCodeController.deleteResourceCode);
+// ------------- time ----------
+router.get("/time/getOne/:timeId",auth,TimeController.getOne);
+router.get("/time/getAll",auth,TimeController.getAll);
+router.post("/time/insert",auth, TimeController.insert);
+router.put("/time/update/:timeId",auth,TimeController.updateTime);
+router.put("/time/delete/:timeId",auth,TimeController.deleteTime);
+// ------------- major ----------
+router.get("/major/getOne/:majorId",auth,MajorController.getOne);
+router.get("/major/getAll",auth,MajorController.getAll);
+router.post("/major/insert",auth, MajorController.insert);
+router.put("/major/update/:majorId",auth,MajorController.updateMajor);
+router.put("/major/delete/:majorId",auth,MajorController.deleteMajor);
 export default router;
