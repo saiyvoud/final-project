@@ -2,12 +2,15 @@ import express from "express";
 import AdminController from "../controller/admin.controller.js";
 import ClassController from "../controller/class.controller.js";
 import CommitteeController from "../controller/committee.controller.js";
+import FollowController from "../controller/follow.controller.js";
+import FollowDetailController from "../controller/follow.detail.controller.js";
 import MajorController from "../controller/major.controller.js";
 import ResourceCodeController from "../controller/resourceCode.controller.js";
 import ScheduleController from "../controller/schedule.controller.js";
 import ScoringController from "../controller/scoring.controller.js";
 import StudentController from "../controller/student.controller.js";
 import ThesisController from "../controller/thesis.controller.js";
+import ThesisScheduleController from "../controller/thesis.schedule.controller.js";
 import ThesisMemberController from "../controller/thesisMember.controllr.js";
 import TimeController from "../controller/time.controller.js";
 import UserController from "../controller/user.controller.js";
@@ -33,8 +36,8 @@ router.put("/student/delete/:studentId",auth,StudentController.deleteStudent);
 // --------- committee ------
 router.get("/committee/getOne/:committeeId",auth_admin,CommitteeController.getOne);
 router.get("/committee/getAll",auth_admin,CommitteeController.getAll);
-router.post("/committee/insert",auth_admin, CommitteeController.insert);
-router.put("/committee/update/:committeeId",auth_admin,CommitteeController.updateCommittee);
+router.post("/committee/insert",auth, CommitteeController.insert);
+router.put("/committee/update/:committeeId",auth,CommitteeController.updateCommittee);
 router.put("/committee/delete/:committeeId",auth_admin,CommitteeController.deleteCommittee);
 // ---------- admin ----------
 router.post("/admin/login", AdminController.login);
@@ -55,7 +58,7 @@ router.put("/class/update/:classId",auth,ClassController.updateClass);
 router.put("/class/delete/:classId",auth,ClassController.deleteClass);
 // ------------ schedule -------
 router.get("/schedule/getOne/:scheduleId",auth_admin,ScheduleController.getOne);
-router.get("/schedule/getAll",auth_admin,ScheduleController.getAll);
+router.get("/schedule/getAll",auth,auth_admin,ScheduleController.getAll);
 router.post("/schedule/insert",auth_admin, ScheduleController.insert);
 router.put("/schedule/update/:scheduleId",auth_admin,ScheduleController.updateSchedule);
 router.put("/schedule/delete/:scheduleId",auth_admin,ScheduleController.deleteSchedule);
@@ -64,6 +67,8 @@ router.get("/thesis/getOne/:thesisId",auth,ThesisController.getOne);
 router.get("/thesis/getAll",auth,ThesisController.getAll);
 router.post("/thesis/insert",auth, ThesisController.insert);
 router.put("/thesis/update/:thesisId",auth,ThesisController.updateThesis);
+router.put("/thesis/updateSuccess/:thesisId",auth,ThesisController.updateStatusSuccess);
+router.put("/thesis/updateEdit/:thesisId",auth,ThesisController.updateStatusEdit);
 router.put("/thesis/updateAll/:thesisId",auth,ThesisController.updateClassAndTime);
 router.put("/thesis/delete/:thesisId",auth,ThesisController.deleteThesis);
 // -------------- thesisMember ------
@@ -91,9 +96,29 @@ router.post("/time/insert",auth, TimeController.insert);
 router.put("/time/update/:timeId",auth,TimeController.updateTime);
 router.put("/time/delete/:timeId",auth,TimeController.deleteTime);
 // ------------- major ----------
-router.get("/major/getOne/:majorId",auth,MajorController.getOne);
-router.get("/major/getAll",auth,MajorController.getAll);
-router.post("/major/insert",auth, MajorController.insert);
-router.put("/major/update/:majorId",auth,MajorController.updateMajor);
-router.put("/major/delete/:majorId",auth,MajorController.deleteMajor);
+router.get("/major/getOne/:majorId",auth_admin,MajorController.getOne);
+router.get("/major/getAll",auth_admin,MajorController.getAll);
+router.post("/major/insert",auth_admin, MajorController.insert);
+router.put("/major/update/:majorId",auth_admin,MajorController.updateMajor);
+router.put("/major/delete/:majorId",auth_admin,MajorController.deleteMajor);
+// ------------- follow ----------
+router.get("/follow/getOne/:follow_id",auth,FollowController.getOne);
+router.get("/follow/getByUser/:user_id",auth,FollowController.getByUserId);
+router.get("/follow/getByCommittee/:committee_id",auth,FollowController.getByCommitteeId);
+router.get("/follow/getAll",auth,FollowController.getAll);
+router.post("/follow/insert",auth, FollowController.insert);
+router.put("/follow/update/:follow_id",auth,FollowController.updateFollow);
+router.put("/follow/delete/:follow_id",auth,FollowController.deleteFollow);
+// ------------- follow Detail ----------
+router.get("/followDetail/getOne/:followDetailId",auth,FollowDetailController.getOne);
+router.get("/followDetail/getAll",auth,FollowDetailController.getAll);
+router.post("/followDetail/insert",auth, FollowDetailController.insert);
+router.put("/followDetail/update/:followDetailId",auth,FollowDetailController.updateFollowDetail);
+router.put("/followDetail/delete/:followDetailId",auth,FollowDetailController.deleteFollowDetail);
+// ------------- thesis schedule --------
+router.get("/thesisSchedule/getOne/:thesisScheduleId",auth_admin,ThesisScheduleController.getOne);
+router.get("/thesisSchedule/getAll",auth_admin,ThesisScheduleController.getAll);
+router.post("/thesisSchedule/insert",auth_admin, ThesisScheduleController.insert);
+router.put("/thesisSchedule/update/:thesisScheduleId",auth_admin,ThesisScheduleController.updateThesisSchedule);
+router.put("/thesisSchedule/delete/:thesisScheduleId",auth_admin,ThesisScheduleController.deleteThesisSchedule);
 export default router;

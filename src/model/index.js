@@ -10,12 +10,16 @@ import Scoring from "./scoring.model.js";
 import ResourceCode from "./resourceCode.model.js";
 import Time from "./time.model.js";
 import Major from "./major.model.js";
+import ThesisSchedule from "./thesis.schedule.model.js";
+import Follow from "./follow.model.js";
+import FollowDetail from "./follow.detail.model.js";
 const Models = {
   User,
   Student,
   Committee,
   Admin,
   Schedule,
+  ThesisSchedule,
   ThesisMembers,
   Class,
   Thesis,
@@ -23,5 +27,7 @@ const Models = {
   ResourceCode,
   Time,
   Major,
-}
+  Follow,
+  FollowDetail,
+};
 export default Models;

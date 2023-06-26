@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Models from "../model/index.js";
-import { EMessage, SMessage } from "../service/message.js";
+import { EMessage, SMessage, Status } from "../service/message.js";
 import {
   SendCreate,
   SendError400,
@@ -46,11 +46,22 @@ export default class ResourceCodeController {
       if (!mongoose.Types.ObjectId.isValid(thesisId)) {
         return SendError404(res, EMessage.NotFound + " thesisId");
       }
-      const resourceCode = await Models.ResourceCode.create({
-        thesisId,
-        fileCode,
+      const thesis = await Models.Thesis.findOne({
+        isActive: true,
+        _id: thesisId,
       });
-      return SendCreate(res, SMessage.Create, resourceCode);
+
+      if (
+        thesis.thesisStatus == Status.complete ||
+        thesis.thesisStatus == Status.edit
+      ) {
+        const resourceCode = await Models.ResourceCode.create({
+          thesisId,
+          fileCode,
+        });
+        return SendCreate(res, SMessage.Create, resourceCode);
+      }
+      return SendError400(res, "Status Thesis Mission Faild");
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);

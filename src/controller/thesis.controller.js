@@ -19,7 +19,7 @@ export default class ThesisController {
       const thesis = await Models.Thesis.findOne({
         isActive: true,
         _id: thesisId,
-      })
+      });
       return SendSuccess(res, SMessage.getOne, thesis);
     } catch (error) {
       console.log(error);
@@ -30,7 +30,7 @@ export default class ThesisController {
     try {
       const thesis = await Models.Thesis.find({
         isActive: true,
-      })
+      });
       return SendSuccess(res, SMessage.getAll, thesis);
     } catch (error) {
       console.log(error);
@@ -46,24 +46,30 @@ export default class ThesisController {
       const {
         studentID,
         studentName,
+        studentRoom,
         memberID,
         memberName,
+        memberRoom,
         thesisTitle,
         thesisDetail,
         thesisAbstract,
         thesisFile,
+        proposalFile,
       } = req.body;
-     
 
       const thesis = await Models.Thesis.create({
         studentID,
         studentName,
+        studentRoom,
         memberID,
         memberName,
+        memberRoom,
         thesisTitle,
+
         thesisDetail,
         thesisAbstract,
         thesisFile,
+        proposalFile,
       });
       return SendCreate(res, SMessage.Create, thesis);
     } catch (error) {
@@ -85,12 +91,16 @@ export default class ThesisController {
         scoringId,
         studentID,
         studentName,
+        studentRoom,
         memberID,
         memberName,
+        memberRoom,
         thesisTitle,
+
         thesisDetail,
         thesisAbstract,
         thesisFile,
+        proposalFile,
         thesisStatus,
       } = req.body;
       if (!mongoose.Types.ObjectId.isValid(scoringId)) {
@@ -106,12 +116,16 @@ export default class ThesisController {
           scoringId,
           studentID,
           studentName,
+          studentRoom,
           memberID,
           memberName,
+          memberRoom,
           thesisTitle,
+
           thesisDetail,
           thesisAbstract,
           thesisFile,
+          proposalFile,
           thesisStatus,
         },
         { new: true }
@@ -122,6 +136,7 @@ export default class ThesisController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+
   static async updateClassAndTime(req, res) {
     try {
       const thesisId = req.params.thesisId;
@@ -164,6 +179,44 @@ export default class ThesisController {
         { new: true }
       );
       return SendSuccess(res, SMessage.Delete, thesis);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async updateStatusSuccess(req, res) {
+    try {
+      const thesisId = req.params.thesisId;
+      if (!mongoose.Types.ObjectId.isValid(thesisId)) {
+        return SendError404(res, EMessage.NotFound + " ThesisId");
+      }
+      const thesis = await Models.Thesis.findByIdAndUpdate(
+        thesisId,
+        {
+          thesisStatus: Status.complete,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, thesis);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async updateStatusEdit(req, res) {
+    try {
+      const thesisId = req.params.thesisId;
+      if (!mongoose.Types.ObjectId.isValid(thesisId)) {
+        return SendError404(res, EMessage.NotFound + " ThesisId");
+      }
+      const thesis = await Models.Thesis.findByIdAndUpdate(
+        thesisId,
+        {
+          thesisStatus: Status.edit,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, thesis);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);

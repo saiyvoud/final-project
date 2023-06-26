@@ -7,7 +7,7 @@ export const auth = async (req, res, next) => {
     const token = req.headers["token"];
     if (!token) return SendError401(res, EMessage.Unauthorization);
     const user = await VerifyToken(token);
-    if (!user) return SendError401(res, EMessage.Unauthorization);
+    if (!user) return SendError401(res,"Invaild Token");
     next();
   } catch (error) {
     console.log(error);

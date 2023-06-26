@@ -67,6 +67,7 @@ export default class UserController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+ 
   static async updateProfileImageCloud(req, res) {
     try {
       const userId = req.params.userId;

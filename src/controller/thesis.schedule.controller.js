@@ -9,38 +9,32 @@ import {
   SendSuccess,
 } from "../service/response.js";
 import {
-  ValidateSchedule,
-  ValidateUpdateSchedule,
+  ValidateThesisSchedule,
+  ValidateUpdateThesisSchedule,
 } from "../service/validate.js";
-
-export default class ScheduleController {
+export default class ThesisScheduleController {
   static async getOne(req, res) {
     try {
-      const scheduleId = req.params.scheduleId;
-      if (!mongoose.Types.ObjectId.isValid(scheduleId)) {
-        return SendError404(res, EMessage.NotFound + " scheduleId");
+      const thesisScheduleId = req.params.thesisScheduleId;
+      if (!mongoose.Types.ObjectId.isValid(thesisScheduleId)) {
+        return SendError404(res, EMessage.NotFound + " thesisScheduleId");
       }
-      const schedule = await Models.Schedule.findOne({
+      const thesisSchedule = await Models.ThesisSchedule.findOne({
         isActive: true,
-        _id: scheduleId,
+        _id: thesisScheduleId,
       });
-      return SendSuccess(res, SMessage.getOne, schedule);
+      return SendSuccess(res, SMessage.SelOne, thesisSchedule);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
-
   static async getAll(req, res) {
     try {
-      const schedule = await Models.Schedule.find({
+      const thesisSchedule = await Models.ThesisSchedule.find({
         isActive: true,
-      }).populate({
-        path: "thesis_id",
-        select: "thesisTitle studentName memberName"
       });
-      const thesisId = await Models.Thesis.find(schedule.thesis_id)
-      return SendSuccess(res, SMessage.getAll, schedule);
+      return SendSuccess(res, SMessage.SelAll, thesisSchedule);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
@@ -48,7 +42,7 @@ export default class ScheduleController {
   }
   static async insert(req, res) {
     try {
-      const validate = ValidateSchedule(req.body);
+      const validate = ValidateThesisSchedule(req.body);
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
@@ -56,48 +50,52 @@ export default class ScheduleController {
         admin_id,
         major_id,
         thesis_id,
-        times,
         committeeName,
+        times,
         classRoom,
         dateTime,
         schoolYear,
       } = req.body;
       if (
         !mongoose.Types.ObjectId.isValid(admin_id) ||
-        !mongoose.Types.ObjectId.isValid(major_id)
+        !mongoose.Types.ObjectId.isValid(major_id) ||
+        !mongoose.Types.ObjectId.isValid(thesis_id)
       ) {
-        return SendError404(res, EMessage.NotFound + " committeeId,classId");
+        return SendError404(
+          res,
+          EMessage.NotFound + " adminId, majorId, thesisId"
+        );
       }
-      const schedule = await Models.Schedule.create({
+      const thesisSchedule = await Models.ThesisSchedule.create({
         admin_id,
         major_id,
         thesis_id,
-        times,
         committeeName,
+        times,
         classRoom,
         dateTime,
         schoolYear,
       });
-      return SendCreate(res, SMessage.Create, schedule);
+      return SendCreate(res, SMessage.Create, thesisSchedule);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
-  static async updateSchedule(req, res) {
+  static async updateThesisSchedule(req, res) {
     try {
-      const scheduleId = req.params.scheduleId;
-      if (!mongoose.Types.ObjectId.isValid(scheduleId)) {
-        return SendError404(res, EMessage.NotFound + " scheduleId");
+      const thesisScheduleId = req.params.thesisScheduleId;
+      if (!mongoose.Types.ObjectId.isValid(thesisScheduleId)) {
+        return SendError404(res, EMessage.NotFound + " thesisScheduleId");
       }
-      const validate = ValidateUpdateSchedule(req.body);
+      const validate = ValidateUpdateThesisSchedule(req.body);
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const { thesis_id, times, committeeName } = req.body;
+      const { thesis_id, committeeName, times } = req.body;
       if (!committeeName) {
-        const schedule = await Models.Schedule.findByIdAndUpdate(
-          scheduleId,
+        const thesisSchedule = await Models.ThesisSchedule.findByIdAndUpdate(
+          thesisScheduleId,
           {
             $push: {
               thesis_id: thesis_id,
@@ -106,10 +104,10 @@ export default class ScheduleController {
           }, // set
           { new: true }
         );
-        return SendSuccess(res, SMessage.Update, schedule);
+        return SendSuccess(res, SMessage.Update, thesisSchedule);
       }
-      const schedule = await Models.Schedule.findByIdAndUpdate(
-        scheduleId,
+      const thesisSchedule = await Models.ThesisSchedule.findByIdAndUpdate(
+        thesisScheduleId,
         {
           $push: {
             thesis_id: thesis_id,
@@ -119,26 +117,26 @@ export default class ScheduleController {
         }, // set
         { new: true }
       );
-      return SendSuccess(res, SMessage.Update, schedule);
+      return SendSuccess(res, SMessage.Update, thesisSchedule);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
-  static async deleteSchedule(req, res) {
+  static async deleteThesisSchedule(req, res) {
     try {
-      const scheduleId = req.params.scheduleId;
-      if (!mongoose.Types.ObjectId.isValid(scheduleId)) {
-        return SendError404(res, EMessage.NotFound + " scheduleId");
+      const thesisScheduleId = req.params.thesisScheduleId;
+      if (!mongoose.Types.ObjectId.isValid(thesisScheduleId)) {
+        return SendError404(res, EMessage.NotFound + " thesisScheduleId");
       }
-      const schedule = await Models.Schedule.findByIdAndUpdate(
-        scheduleId,
+      const thesisSchedule = await Models.ThesisSchedule.findByIdAndUpdate(
+        thesisScheduleId,
         {
           isActive: false,
         },
         { new: true }
       );
-      return SendSuccess(res, SMessage.Delete, schedule);
+      return SendSuccess(res, SMessage.Delete, thesisSchedule);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);

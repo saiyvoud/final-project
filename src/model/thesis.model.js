@@ -5,15 +5,7 @@ const thesisSchema = mongoose.Schema(
   {
     scoringId: {
       type: Array,
-      default: ""
-    },
-    classId: {
-      type: String,
-      default: ""
-    },
-    timeId: {
-      type: String,
-      default: ""
+      default: "",
     },
     studentID: {
       type: String,
@@ -23,23 +15,36 @@ const thesisSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    memberID: {
+    studentRoom: {
       type: String,
       require: true,
+    },
+    memberID: {
+      type: String,
+      default: ""
     },
     memberName: {
       type: String,
-      require: true,
+      default: ""
     },
+    memberRoom: {
+      type: String,
+      default: ""
+    },
+
     thesisTitle: {
       type: String,
       require: true,
     },
     thesisAbstract: {
       type: String,
-      require: true,
+      default: "",
     },
     thesisFile: {
+      type: String,
+      default: "",
+    },
+    proposalFile: {
       type: String,
       require: true,
     },
@@ -50,7 +55,7 @@ const thesisSchema = mongoose.Schema(
     },
     thesisDetail: {
       type: String,
-      require: true,
+      default: "",
     },
     isActive: {
       type: Boolean,

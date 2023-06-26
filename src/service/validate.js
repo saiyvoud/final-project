@@ -59,21 +59,21 @@ export const ValidateUpdateClass = (classRoom) => {
 };
 // --------- schedule -------
 export const ValidateSchedule = (schedule) => {
-  const {   scheduleDate,scheduleLocation, committeeId,thesisId,classId, } = schedule;
-  return ValidateData({   scheduleDate,scheduleLocation, committeeId,thesisId,classId, });
+  const {  admin_id,major_id,thesis_id,times,committeeName,classRoom,dateTime,schoolYear, } = schedule;
+  return ValidateData({ admin_id,major_id,thesis_id,times,committeeName,classRoom,dateTime,schoolYear, });
 };
 export const ValidateUpdateSchedule = (schedule) => {
-  const {   scheduleDate,scheduleLocation, committeeId,thesisId,classId, } = schedule;
-  return ValidateData({   scheduleDate,scheduleLocation, committeeId,thesisId,classId, });
+  const { thesis_id,times, } = schedule;
+  return ValidateData({ thesis_id,times });
 };
 // ---------- thesis --------
 export const ValidateThesis = (thesis) => {
-  const { studentID,studentName,memberID,memberName,thesisTitle,thesisDetail,thesisAbstract,thesisFile, } = thesis;
-  return ValidateData({ studentID,studentName,memberID,memberName,thesisTitle,thesisDetail,thesisAbstract,thesisFile, });
+  const {studentID,studentName,studentRoom,thesisTitle,thesisDetail,thesisAbstract,proposalFile, } = thesis;
+  return ValidateData({ studentID, studentName, studentRoom,  thesisTitle,  thesisDetail, thesisAbstract, proposalFile, });
 };
 export const ValidateUpdateThesis = (thesis) => {
-  const { scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, } = thesis;
-  return ValidateData({ scoringId,studentId,thesisTitle,thesisDetail,thesisAbstract,thesisFile,thesisStatus, });
+  const { scoringId,studentID,studentName,studentRoom,thesisTitle,thesisDetail,thesisAbstract,proposalFile,thesisStatus, } = thesis;
+  return ValidateData({ scoringId,studentID,studentName,studentRoom,thesisTitle,thesisDetail,thesisAbstract,proposalFile,thesisStatus, });
 };
 // ---------- thesisMember --------
 export const ValidateThesisMember = (thesisMember) => {
@@ -99,4 +99,27 @@ export const ValidateTime = (time) => {
 export const ValidateMajor = (major) => {
   const { fullname,nickname } = major;
   return ValidateData({ fullname,nickname });
+};
+// ---------- follow -------
+export const ValidateFollow = (follow) => {
+  const { user_id,thesis_id,committee_id,schoolYear } = follow;
+  return ValidateData({ user_id, thesis_id,committee_id,schoolYear });
+};
+// ---------- follow Detail -------
+export const ValidateFollowDetail = (followDetail) => {
+  const { follow_id,appointment,presentNow,presentEdit, } = followDetail;
+  return ValidateData({ follow_id,appointment,presentNow,presentEdit });
+};
+export const ValidateUpdateFollowDetail = (followDetail) => {
+  const { nextAppointment,presentNext, } = followDetail;
+  return ValidateData({ nextAppointment,presentNext, });
+};
+// ----------- thesis schedule ------
+export const ValidateThesisSchedule = (thesisSchedule) => {
+  const {  admin_id,major_id,thesis_id,committeeName,times,classRoom,dateTime,schoolYear, } = thesisSchedule;
+  return ValidateData({  admin_id,major_id,thesis_id,committeeName,times,classRoom,dateTime,schoolYear, });
+};
+export const ValidateUpdateThesisSchedule = (thesisSchedule) => {
+  const {  thesis_id,times, } = thesisSchedule;
+  return ValidateData({  thesis_id,times, });
 };

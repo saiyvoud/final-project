@@ -14,8 +14,7 @@ const scheduleSchema = mongoose.Schema(
     },
     thesis_id: {
       type: Array,
-      ref: "thesis",
-      default: mongoose.Types.ObjectId,
+      default: "",
     },
     times: {
       type: Array,
@@ -45,6 +44,6 @@ const scheduleSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Schedule = mongoose.model("schedule", scheduleSchema);
+const ThesisSchedule = mongoose.model("thesis_schedule", scheduleSchema);
 
-export default Schedule;
+export default ThesisSchedule;
