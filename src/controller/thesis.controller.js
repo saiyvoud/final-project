@@ -44,30 +44,23 @@ export default class ThesisController {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
       const {
-        studentID,
-        studentName,
-        studentRoom,
-        memberID,
-        memberName,
-        memberRoom,
+        student_id,
+        member_id,
         thesisTitle,
-        thesisDetail,
-        thesisAbstract,
+        thesisDescription,
         thesisFile,
         proposalFile,
       } = req.body;
+      if (!mongoose.Types.ObjectId.isValid(student_id)) {
+        return SendError400(res, EMessage.NotFound + "student");
+      }
 
       const thesis = await Models.Thesis.create({
-        studentID,
-        studentName,
-        studentRoom,
-        memberID,
-        memberName,
-        memberRoom,
+        student_id,
+        member_id,
         thesisTitle,
-
-        thesisDetail,
-        thesisAbstract,
+        thesisDescription,
+        
         thesisFile,
         proposalFile,
       });
@@ -89,16 +82,7 @@ export default class ThesisController {
       }
       const {
         scoringId,
-        studentID,
-        studentName,
-        studentRoom,
-        memberID,
-        memberName,
-        memberRoom,
         thesisTitle,
-
-        thesisDetail,
-        thesisAbstract,
         thesisFile,
         proposalFile,
         thesisStatus,
@@ -114,16 +98,9 @@ export default class ThesisController {
         thesisId,
         {
           scoringId,
-          studentID,
-          studentName,
-          studentRoom,
-          memberID,
-          memberName,
-          memberRoom,
           thesisTitle,
-
-          thesisDetail,
-          thesisAbstract,
+          thesisDescription,
+          
           thesisFile,
           proposalFile,
           thesisStatus,
@@ -179,6 +156,35 @@ export default class ThesisController {
         { new: true }
       );
       return SendSuccess(res, SMessage.Delete, thesis);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+
+  static async updateStatus(req, res) {
+    try {
+      const thesisId = req.params.thesisId;
+      if (!mongoose.Types.ObjectId.isValid(thesisId)) {
+        return SendError404(res, EMessage.NotFound + " ThesisId");
+      }
+      const { status, description } = req.body;
+      if (!status) {
+        return SendError400(res, "Status is required!");
+      }
+      const allowStatus = Object.values(Status);
+      if (!allowStatus.includes(status)) {
+        return SendError400(res, "Not Match Status Thesis");
+      }
+      const thesis = await Models.Thesis.findByIdAndUpdate(
+        thesisId,
+        {
+          thesisStatus: status,
+          thesisDescription: description,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, thesis);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);

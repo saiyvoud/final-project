@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const studentSchema = mongoose.Schema(
+const memberSchema = mongoose.Schema(
   {
-    studentID: {
+    memberID: {
       type: String,
       require: true,
     },
-    studentName: {
+    memberName: {
       type: String,
       require: true,
     },
@@ -15,7 +15,7 @@ const studentSchema = mongoose.Schema(
       ref: "user",
       require: true,
     },
-    studentRoom: {
+    memberRoom: {
       type: String,
       require: true,
     },
@@ -27,5 +27,5 @@ const studentSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Student = mongoose.model("student", studentSchema);
-export default Student;
+const Member = mongoose.model("member", memberSchema);
+export default Member;

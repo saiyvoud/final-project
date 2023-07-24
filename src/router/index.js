@@ -5,6 +5,7 @@ import CommitteeController from "../controller/committee.controller.js";
 import FollowController from "../controller/follow.controller.js";
 import FollowDetailController from "../controller/follow.detail.controller.js";
 import MajorController from "../controller/major.controller.js";
+import MemberController from "../controller/member.controller.js";
 import ResourceCodeController from "../controller/resourceCode.controller.js";
 import ScheduleController from "../controller/schedule.controller.js";
 import ScoringController from "../controller/scoring.controller.js";
@@ -33,6 +34,12 @@ router.get("/student/getAll",auth,StudentController.getAll);
 router.post("/student/insert",auth, StudentController.insert);
 router.put("/student/update/:studentId",auth,StudentController.updateStudent);
 router.put("/student/delete/:studentId",auth,StudentController.deleteStudent);
+// ------------ member -------
+router.get("/member/getOne/:memberId",auth,MemberController.getOne);
+router.get("/member/getAll",auth,MemberController.getAll);
+router.post("/member/insert",auth, MemberController.insert);
+router.put("/member/update/:memberId",auth,MemberController.updateMember);
+router.put("/member/delete/:memberId",auth,MemberController.deleteMember);
 // --------- committee ------
 router.get("/committee/getOne/:committeeId",auth_admin,CommitteeController.getOne);
 router.get("/committee/getAll",auth_admin,CommitteeController.getAll);
@@ -67,6 +74,7 @@ router.get("/thesis/getOne/:thesisId",auth,ThesisController.getOne);
 router.get("/thesis/getAll",auth,ThesisController.getAll);
 router.post("/thesis/insert",auth, ThesisController.insert);
 router.put("/thesis/update/:thesisId",auth,ThesisController.updateThesis);
+router.put("/thesis/updateStatus/:thesisId",auth,ThesisController.updateStatus);
 router.put("/thesis/updateSuccess/:thesisId",auth,ThesisController.updateStatusSuccess);
 router.put("/thesis/updateEdit/:thesisId",auth,ThesisController.updateStatusEdit);
 router.put("/thesis/updateAll/:thesisId",auth,ThesisController.updateClassAndTime);

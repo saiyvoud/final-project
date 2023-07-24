@@ -13,6 +13,7 @@ import Major from "./major.model.js";
 import ThesisSchedule from "./thesis.schedule.model.js";
 import Follow from "./follow.model.js";
 import FollowDetail from "./follow.detail.model.js";
+import Member from "./member.model.js";
 const Models = {
   User,
   Student,
@@ -29,5 +30,6 @@ const Models = {
   Major,
   Follow,
   FollowDetail,
+  Member,
 };
 export default Models;

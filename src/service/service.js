@@ -17,6 +17,16 @@ export const UpdateThesis = (thesisId, scoringId) => {
       if (!isMacth) {
         reject("Not Found ThesisId");
       }
+      // let scoring = JSON.stringify(isMacth.scoringId[0]);
+      // console.log(`scoring========>${scoring}`);
+      // if (scoring === "") {
+      //   const thesis = await Models.Thesis.findByIdAndUpdate(
+      //     thesisId,
+      //     { $set: { scoringId: scoringId } }, // set
+      //     { new: true }
+      //   );
+      //   return resovle(thesis);
+      // }
       const thesis = await Models.Thesis.findByIdAndUpdate(
         thesisId,
         { $push: { scoringId: scoringId } }, // set

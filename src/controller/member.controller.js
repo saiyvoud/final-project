@@ -8,20 +8,20 @@ import {
   SendError500,
   SendSuccess,
 } from "../service/response.js";
-import { ValidateStudent, ValidateUpdateStudent } from "../service/validate.js";
+import { ValidateMember, ValidateUpdateMember } from "../service/validate.js";
 
-export default class StudentController {
+export default class MemberController {
   static async getOne(req, res) {
     try {
-      const studentId = req.params.studentId;
-      if (!mongoose.Types.ObjectId.isValid(studentId)) {
+      const memberId = req.params.memberId;
+      if (!mongoose.Types.ObjectId.isValid(memberId)) {
         return SendError404(res, EMessage.NotFound);
       }
-      const student = await Models.Student.findOne({
+      const member = await Models.Member.findOne({
         isActive: true,
-        _id: studentId,
+        _id: memberId,
       });
-      return SendSuccess(res, SMessage.SelOne, student);
+      return SendSuccess(res, SMessage.SelOne, member);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
@@ -29,10 +29,10 @@ export default class StudentController {
   }
   static async getAll(req, res) {
     try {
-      const students = await Models.Student.find({
+      const members = await Models.Member.find({
         isActive: true,
       });
-      return SendSuccess(res, SMessage.SelAll, students);
+      return SendSuccess(res, SMessage.SelAll, members);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
@@ -40,26 +40,26 @@ export default class StudentController {
   }
   static async insert(req, res) {
     try {
-      const { studentID, studentName, studentRoom, user_id } = req.body;
-      const validate = ValidateStudent(req.body);
+      const { memberID, memberName, memberRoom, user_id } = req.body;
+      const validate = ValidateMember(req.body);
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
       if (!mongoose.Types.ObjectId.isValid(user_id)) {
         return SendError404(res, EMessage.NotFound + "UserID");
       }
-      const student = await Models.Student.findOne({
+      const member = await Models.Member.findOne({
         isActive: true,
-        studentID,
+        memberID,
       });
-      if (student) {
-        return SendError400(res, EMessage.Already + "Student");
+      if (member) {
+        return SendError400(res, EMessage.Already + "member");
       }
-      const data = await Models.Student.create({
-        studentID,
-        studentName,
+      const data = await Models.Member.create({
+        memberID,
+        memberName,
         user_id,
-        studentRoom,
+        memberRoom,
       });
       return SendCreate(res, SMessage.Create, data);
     } catch (error) {
@@ -67,47 +67,47 @@ export default class StudentController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
-  static async updateStudent(req, res) {
+  static async updateMember(req, res) {
     try {
-      const studentId = req.params.studentId;
-      if (!mongoose.Types.ObjectId.isValid(studentId)) {
+      const memberId = req.params.memberId;
+      if (!mongoose.Types.ObjectId.isValid(memberId)) {
         return SendError404(res, EMessage.NotFound);
       }
-      const validate = ValidateUpdateStudent(req.body);
+      const validate = ValidateUpdateMember(req.body);
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const { studentID, studentName, studentRoom } = req.body;
-     
-      const student = await Models.Student.findByIdAndUpdate(
-        studentId,
+      const { memberID, memberName, memberRoom } = req.body;
+
+      const member = await Models.Member.findByIdAndUpdate(
+        memberId,
         {
-          studentID,
-          studentName,
-          studentRoom,
+          memberID,
+          memberName,
+          memberRoom,
         },
         { new: true }
       );
-      return SendSuccess(res, SMessage.Update, student);
+      return SendSuccess(res, SMessage.Update, member);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
-  static async deleteStudent(req, res) {
+  static async deleteMember(req, res) {
     try {
-      const studentId = req.params.studentId;
-      if (!mongoose.Types.ObjectId.isValid(studentId)) {
+      const memberId = req.params.memberId;
+      if (!mongoose.Types.ObjectId.isValid(memberId)) {
         return SendError404(res, EMessage.NotFound);
       }
-      const student = await Models.Student.findByIdAndUpdate(
-        studentId,
+      const member = await Models.Member.findByIdAndUpdate(
+        memberId,
         {
           isActive: false,
         },
         { new: true }
       );
-      return SendSuccess(res, SMessage.Delete, student);
+      return SendSuccess(res, SMessage.Delete, member);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);

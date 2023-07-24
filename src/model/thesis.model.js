@@ -7,38 +7,38 @@ const thesisSchema = mongoose.Schema(
       type: Array,
       default: "",
     },
-    studentID: {
+    student_id: {
+      type: mongoose.Types.ObjectId,
+      ref: "student",
+      unique: true,
+     },
+     member_id:{
       type: String,
-      require: true,
-    },
-    studentName: {
-      type: String,
-      require: true,
-    },
-    studentRoom: {
-      type: String,
-      require: true,
-    },
-    memberID: {
-      type: String,
-      default: ""
-    },
-    memberName: {
-      type: String,
-      default: ""
-    },
-    memberRoom: {
-      type: String,
-      default: ""
-    },
-
+      default: "",
+     },
+    // studentName: {
+    //   type: String,
+    //   require: true,
+    // },
+    // studentRoom: {
+    //   type: String,
+    //   require: true,
+    // },
+    // memberID: {
+    //   type: String,
+    //   default: ""
+    // },
+    // memberName: {
+    //   type: String,
+    //   default: ""
+    // },
+    // memberRoom: {
+    //   type: String,
+    //   default: ""
+    // },
     thesisTitle: {
       type: String,
       require: true,
-    },
-    thesisAbstract: {
-      type: String,
-      default: "",
     },
     thesisFile: {
       type: String,
@@ -53,7 +53,7 @@ const thesisSchema = mongoose.Schema(
       enum: Object.values(Status),
       default: Status.cancel,
     },
-    thesisDetail: {
+    thesisDescription: {
       type: String,
       default: "",
     },

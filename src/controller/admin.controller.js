@@ -192,10 +192,14 @@ export default class AdminController {
       if (!newPassword) {
         return SendError404(res, "Error GeneratePassword");
       }
+
+      let data = {
+        newPassword,
+      }
       const user = await Models.Admin.findByIdAndUpdate(
         emailExit._id,
         {
-          password: newPassword,
+          category_id: data,
         },
         { new: true }
       );

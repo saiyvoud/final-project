@@ -32,12 +32,22 @@ export const ValidateRefreshToken = (user) => {
 };
 // ----------- student ---------
 export const ValidateStudent = (student) => {
-  const { studentID, studentName, studentDepartment, studentEmail } = student;
-  return ValidateData({ studentID, studentName, studentDepartment, studentEmail });
+  const { studentID, studentName, studentRoom, user_id } = student;
+  return ValidateData({ studentID, studentName, studentRoom, user_id });
 };
+
 export const ValidateUpdateStudent = (student) => {
-  const { studentID, studentName, studentDepartment, studentEmail } = student;
-  return ValidateData({ studentID, studentName, studentDepartment, studentEmail });
+  const { studentID, studentName, studentRoom,  } = student;
+  return ValidateData({ studentID, studentName, studentRoom,  });
+};
+// ------------- member ----------
+export const ValidateMember = (member) => {
+  const { memberID, memberName, memberRoom, user_id } = member;
+  return ValidateData({ memberID, memberName, memberRoom, user_id });
+};
+export const ValidateUpdateMember = (member) => {
+  const { memberID, memberName, memberRoom,  } = member;
+  return ValidateData({ memberID, memberName, memberRoom,  });
 };
 // ----------- committee ---------
 export const ValidateCommittee = (committee) => {
@@ -68,12 +78,12 @@ export const ValidateUpdateSchedule = (schedule) => {
 };
 // ---------- thesis --------
 export const ValidateThesis = (thesis) => {
-  const {studentID,studentName,studentRoom,thesisTitle,thesisDetail,thesisAbstract,proposalFile, } = thesis;
-  return ValidateData({ studentID, studentName, studentRoom,  thesisTitle,  thesisDetail, thesisAbstract, proposalFile, });
+  const {student_id,thesisTitle,proposalFile, } = thesis;
+  return ValidateData({ student_id,  thesisTitle,   proposalFile, });
 };
 export const ValidateUpdateThesis = (thesis) => {
-  const { scoringId,studentID,studentName,studentRoom,thesisTitle,thesisDetail,thesisAbstract,proposalFile,thesisStatus, } = thesis;
-  return ValidateData({ scoringId,studentID,studentName,studentRoom,thesisTitle,thesisDetail,thesisAbstract,proposalFile,thesisStatus, });
+  const { scoringId,thesisTitle,proposalFile,thesisStatus, } = thesis;
+  return ValidateData({ scoringId,thesisTitle,proposalFile,thesisStatus, });
 };
 // ---------- thesisMember --------
 export const ValidateThesisMember = (thesisMember) => {

@@ -64,6 +64,7 @@ export default class ScoringController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+
   static async updateScoring(req, res) {
     try {
       const scoringId = req.params.scoringId;
