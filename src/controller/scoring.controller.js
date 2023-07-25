@@ -8,9 +8,25 @@ import {
   SendError500,
   SendSuccess,
 } from "../service/response.js";
-import {  UpdateThesis } from "../service/service.js";
+import { UpdateThesis } from "../service/service.js";
 import { ValidateScoring } from "../service/validate.js";
 export default class ScoringController {
+  static async getByThesisID(req, res) {
+    try {
+      const thesisId = req.params.thesisId;
+      if (!mongoose.Types.ObjectId.isValid(thesisId)) {
+        return SendError404(res, EMessage.NotFound + " thesisId");
+      }
+      const scoring = await Models.Scoring.find({
+        isActive: true,
+        thesisId: thesisId,
+      });
+      return SendSuccess(res, SMessage.SelOne, scoring);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
   static async getOne(req, res) {
     try {
       const scoringId = req.params.scoringId;

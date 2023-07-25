@@ -36,8 +36,8 @@ export default class ScheduleController {
       const schedule = await Models.Schedule.find({
         isActive: true,
       }).populate({
-        path: "thesis_id",
-        select: "thesisTitle studentName memberName"
+        path: "thesis_id major_id",
+        //select: "thesisTitle"
       });
       const thesisId = await Models.Thesis.find(schedule.thesis_id)
       return SendSuccess(res, SMessage.getAll, schedule);

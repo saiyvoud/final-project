@@ -65,7 +65,7 @@ router.put("/class/update/:classId",auth,ClassController.updateClass);
 router.put("/class/delete/:classId",auth,ClassController.deleteClass);
 // ------------ schedule -------
 router.get("/schedule/getOne/:scheduleId",auth_admin,ScheduleController.getOne);
-router.get("/schedule/getAll",auth,auth_admin,ScheduleController.getAll);
+router.get("/schedule/getAll",auth_admin,ScheduleController.getAll);
 router.post("/schedule/insert",auth_admin, ScheduleController.insert);
 router.put("/schedule/update/:scheduleId",auth_admin,ScheduleController.updateSchedule);
 router.put("/schedule/delete/:scheduleId",auth_admin,ScheduleController.deleteSchedule);
@@ -74,6 +74,7 @@ router.get("/thesis/getOne/:thesisId",auth,ThesisController.getOne);
 router.get("/thesis/getAll",auth,ThesisController.getAll);
 router.post("/thesis/insert",auth, ThesisController.insert);
 router.put("/thesis/update/:thesisId",auth,ThesisController.updateThesis);
+router.put("/thesis/updateMember/:thesisId",auth,ThesisController.updateMember);
 router.put("/thesis/updateStatus/:thesisId",auth,ThesisController.updateStatus);
 router.put("/thesis/updateSuccess/:thesisId",auth,ThesisController.updateStatusSuccess);
 router.put("/thesis/updateEdit/:thesisId",auth,ThesisController.updateStatusEdit);
@@ -87,6 +88,7 @@ router.put("/thesisMember/update/:thesisMemberId",auth,ThesisMemberController.up
 router.put("/thesisMember/delete/:thesisMemberId",auth,ThesisMemberController.deleteThesisMember);
 // -------------- scoring ------
 router.get("/scoring/getOne/:scoringId",auth,ScoringController.getOne);
+router.get("/scoring/getByThesisID/:thesisId",auth,ScoringController.getByThesisID);
 router.get("/scoring/getAll",auth,ScoringController.getAll);
 router.post("/scoring/insert",auth, ScoringController.insert);
 router.put("/scoring/update/:scoringId",auth,ScoringController.updateScoring);
@@ -120,6 +122,7 @@ router.put("/follow/delete/:follow_id",auth,FollowController.deleteFollow);
 // ------------- follow Detail ----------
 router.get("/followDetail/getOne/:followDetailId",auth,FollowDetailController.getOne);
 router.get("/followDetail/getAll",auth,FollowDetailController.getAll);
+router.get("/followDetail/getByFollowID/:followId",auth,FollowDetailController.getByFollowID);
 router.post("/followDetail/insert",auth, FollowDetailController.insert);
 router.put("/followDetail/update/:followDetailId",auth,FollowDetailController.updateFollowDetail);
 router.put("/followDetail/delete/:followDetailId",auth,FollowDetailController.deleteFollowDetail);

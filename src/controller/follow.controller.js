@@ -29,13 +29,13 @@ export default class FollowController {
   }
   static async getByUserId(req, res) {
     try {
-      const user_id = req.params.user_id;
-      if (!mongoose.Types.ObjectId.isValid(user_id)) {
-        return SendError404(res, EMessage.NotFound + " user_id");
+      const student_id = req.params.student_id;
+      if (!mongoose.Types.ObjectId.isValid(student_id)) {
+        return SendError404(res, EMessage.NotFound + " student_id");
       }
       const follow = await Models.Follow.findOne({
         isActive: true,
-        user_id,
+        student_id,
       });
       return SendSuccess(res, SMessage.SelOne, follow);
     } catch (error) {
@@ -76,11 +76,11 @@ export default class FollowController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const { user_id, thesis_id, committee_id, schoolYear } = req.body;
+      const { student_id, thesis_id, committee_id, schoolYear } = req.body;
       if (
         !mongoose.Types.ObjectId.isValid(thesis_id) ||
         !mongoose.Types.ObjectId.isValid(committee_id) ||
-        !mongoose.Types.ObjectId.isValid(user_id)
+        !mongoose.Types.ObjectId.isValid(student_id)
       ) {
         return SendError404(
           res,
@@ -88,7 +88,7 @@ export default class FollowController {
         );
       }
       const follow = await Models.Follow.create({
-        user_id,
+        student_id,
         thesis_id,
         committee_id,
         schoolYear,

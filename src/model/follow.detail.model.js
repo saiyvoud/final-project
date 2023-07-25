@@ -26,10 +26,10 @@ const followDetailSchema = mongoose.Schema(
       type: String,
       default: ""
     },
-    signature: {
-      type: Boolean,
-      default: false,
-    },
+    // signature: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     isActive: {
       type: Boolean,
       default: true,

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 const followSchema = mongoose.Schema(
   {
-    user_id: {
+    student_id: {
       type: mongoose.Types.ObjectId,
-      ref: "user",
+      ref: "student",
       require: true,
     },
     thesis_id: {

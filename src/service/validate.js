@@ -112,8 +112,8 @@ export const ValidateMajor = (major) => {
 };
 // ---------- follow -------
 export const ValidateFollow = (follow) => {
-  const { user_id,thesis_id,committee_id,schoolYear } = follow;
-  return ValidateData({ user_id, thesis_id,committee_id,schoolYear });
+  const { student_id,thesis_id,committee_id,schoolYear } = follow;
+  return ValidateData({ student_id, thesis_id,committee_id,schoolYear });
 };
 // ---------- follow Detail -------
 export const ValidateFollowDetail = (followDetail) => {

@@ -14,6 +14,22 @@ import {
 } from "../service/validate.js";
 
 export default class FollowDetailController {
+  static async getByFollowID(req, res) {
+    try {
+      const followId = req.params.followId;
+      if (!mongoose.Types.ObjectId.isValid(followId)) {
+        return SendError404(res, EMessage.NotFound + " followId");
+      }
+      const follow = await Models.FollowDetail.find({
+        isActive: true,
+        follow_id: followId,
+      });
+      return SendSuccess(res, SMessage.SelAll, follow);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
   static async getOne(req, res) {
     try {
       const followDetailId = req.params.followDetailId;
@@ -47,7 +63,14 @@ export default class FollowDetailController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const { follow_id, appointment, presentNow, presentEdit } = req.body;
+      const {
+        follow_id,
+        appointment,
+        presentNow,
+        presentEdit,
+        nextAppointment,
+        presentNext,
+      } = req.body;
       if (!mongoose.Types.ObjectId.isValid(follow_id)) {
         return SendError404(res, EMessage.NotFound + " followId");
       }
@@ -56,6 +79,8 @@ export default class FollowDetailController {
         appointment,
         presentNow,
         presentEdit,
+        nextAppointment,
+        presentNext,
       });
       return SendCreate(res, SMessage.Create, follow);
     } catch (error) {
@@ -79,7 +104,7 @@ export default class FollowDetailController {
         {
           nextAppointment,
           presentNext,
-          signature: true,
+          
         },
         { new: true }
       );

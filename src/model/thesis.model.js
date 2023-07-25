@@ -10,7 +10,7 @@ const thesisSchema = mongoose.Schema(
     student_id: {
       type: mongoose.Types.ObjectId,
       ref: "student",
-      unique: true,
+      //unique: true,
      },
      member_id:{
       type: String,

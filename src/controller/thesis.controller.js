@@ -30,6 +30,9 @@ export default class ThesisController {
     try {
       const thesis = await Models.Thesis.find({
         isActive: true,
+      }).populate({
+        path: "member_id student_id",
+        select: "studentID studentName studentRoom memberID memberName memberRoom"
       });
       return SendSuccess(res, SMessage.getAll, thesis);
     } catch (error) {
@@ -60,11 +63,38 @@ export default class ThesisController {
         member_id,
         thesisTitle,
         thesisDescription,
-        
+
         thesisFile,
         proposalFile,
       });
       return SendCreate(res, SMessage.Create, thesis);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+  static async updateMember(req, res) {
+    try {
+      const thesisId = req.params.thesisId;
+      if (!mongoose.Types.ObjectId.isValid(thesisId)) {
+        return SendError404(res, EMessage.NotFound + " ThesisId");
+      }
+      const { member_id } = req.body;
+      const member = await Models.Member.findOne({
+        _id: member_id,
+        isActive: true,
+      });
+      if (!member) {
+        return SendError404(res, EMessage.NotFound + "member");
+      }
+      const thesis = await Models.Thesis.findByIdAndUpdate(
+        thesisId,
+        {
+          member_id,
+        },
+        { new: true }
+      );
+      return SendSuccess(res, SMessage.Update, thesis);
     } catch (error) {
       console.log(error);
       return SendError500(res, EMessage.FaildServer, error);
@@ -80,13 +110,8 @@ export default class ThesisController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const {
-        scoringId,
-        thesisTitle,
-        thesisFile,
-        proposalFile,
-        thesisStatus,
-      } = req.body;
+      const { scoringId, thesisTitle, thesisFile, proposalFile, thesisStatus } =
+        req.body;
       if (!mongoose.Types.ObjectId.isValid(scoringId)) {
         return SendError404(res, EMessage.NotFound + " scoringId");
       }
@@ -100,7 +125,7 @@ export default class ThesisController {
           scoringId,
           thesisTitle,
           thesisDescription,
-          
+
           thesisFile,
           proposalFile,
           thesisStatus,
