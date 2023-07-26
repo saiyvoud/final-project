@@ -13,7 +13,6 @@ const studentSchema = mongoose.Schema(
     user_id: {
       type: mongoose.Types.ObjectId,
       ref: "user",
-     
     },
     studentRoom: {
       type: String,

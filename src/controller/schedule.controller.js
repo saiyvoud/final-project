@@ -30,6 +30,22 @@ export default class ScheduleController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+  static async getByMajor(req, res) {
+    try {
+      const majorId = req.params.majorId;
+      if (!mongoose.Types.ObjectId.isValid(majorId)) {
+        return SendError404(res, EMessage.NotFound + " majorId");
+      }
+      const schedule = await Models.Schedule.findOne({
+        isActive: true,
+        major_id: majorId,
+      });
+      return SendSuccess(res, SMessage.getOne, schedule);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
 
   static async getAll(req, res) {
     try {
@@ -37,9 +53,9 @@ export default class ScheduleController {
         isActive: true,
       }).populate({
         path: "thesis_id major_id",
-        //select: "thesisTitle"
+        select: "thesisTitle student_id",
       });
-      const thesisId = await Models.Thesis.find(schedule.thesis_id)
+
       return SendSuccess(res, SMessage.getAll, schedule);
     } catch (error) {
       console.log(error);

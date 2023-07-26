@@ -55,8 +55,8 @@ export const ValidateCommittee = (committee) => {
   return ValidateData({ committeeID,committeeName,committeeDescription,committeeChair, });
 };
 export const ValidateUpdateCommittee = (committee) => {
-  const { committeeID,committeeName,committeeDescription,committeeChair, } = committee;
-  return ValidateData({ committeeID,committeeName,committeeDescription,committeeChair, });
+  const { committeeID,committeeName,committeeDescription, } = committee;
+  return ValidateData({ committeeID,committeeName,committeeDescription, });
 };
 // ----------- class room ---------
 export const ValidateClass = (classRoom) => {

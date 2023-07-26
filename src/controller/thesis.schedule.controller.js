@@ -29,6 +29,22 @@ export default class ThesisScheduleController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+  static async getByMajor(req, res) {
+    try {
+      const majorId = req.params.majorId;
+      if (!mongoose.Types.ObjectId.isValid(majorId)) {
+        return SendError404(res, EMessage.NotFound + " majorId");
+      }
+      const thesisSchedule = await Models.ThesisSchedule.findOne({
+        isActive: true,
+        _id: majorId,
+      });
+      return SendSuccess(res, SMessage.SelOne, thesisSchedule);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
   static async getAll(req, res) {
     try {
       const thesisSchedule = await Models.ThesisSchedule.find({

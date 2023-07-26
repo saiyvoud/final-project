@@ -23,7 +23,7 @@ router.post("/user/register", UserController.register);
 router.post("/user/refreshToken", auth, UserController.RefreshToken);
 router.put("/user/forget", UserController.forget);
 router.get("/user/getProfile/:userId",auth,UserController.getProfile);
-router.get("/user/getAll",auth,UserController.getAll);
+router.get("/user/getAll",auth_admin,UserController.getAll);
 router.put("/user/changePassword/:userId",auth,UserController.changePassword);
 router.put("/user/updateProfile/:userId",auth,UserController.updateProfile);
 router.put("/user/updateProfileImageToCloud/:userId",auth,UserController.updateProfileImageCloud);
@@ -41,7 +41,7 @@ router.post("/member/insert",auth, MemberController.insert);
 router.put("/member/update/:memberId",auth,MemberController.updateMember);
 router.put("/member/delete/:memberId",auth,MemberController.deleteMember);
 // --------- committee ------
-router.get("/committee/getOne/:committeeId",auth_admin,CommitteeController.getOne);
+router.get("/committee/getOne/:committeeId",auth,CommitteeController.getOne);
 router.get("/committee/getAll",auth_admin,CommitteeController.getAll);
 router.post("/committee/insert",auth, CommitteeController.insert);
 router.put("/committee/update/:committeeId",auth,CommitteeController.updateCommittee);
@@ -64,7 +64,8 @@ router.post("/class/insert",auth, ClassController.insert);
 router.put("/class/update/:classId",auth,ClassController.updateClass);
 router.put("/class/delete/:classId",auth,ClassController.deleteClass);
 // ------------ schedule -------
-router.get("/schedule/getOne/:scheduleId",auth_admin,ScheduleController.getOne);
+router.get("/schedule/getOne/:scheduleId",auth,ScheduleController.getOne);
+router.get("/schedule/getByMajor/:majorId",auth,ScheduleController.getByMajor);
 router.get("/schedule/getAll",auth_admin,ScheduleController.getAll);
 router.post("/schedule/insert",auth_admin, ScheduleController.insert);
 router.put("/schedule/update/:scheduleId",auth_admin,ScheduleController.updateSchedule);
@@ -128,6 +129,7 @@ router.put("/followDetail/update/:followDetailId",auth,FollowDetailController.up
 router.put("/followDetail/delete/:followDetailId",auth,FollowDetailController.deleteFollowDetail);
 // ------------- thesis schedule --------
 router.get("/thesisSchedule/getOne/:thesisScheduleId",auth_admin,ThesisScheduleController.getOne);
+router.get("/thesisSchedule/getOne/:majorId",auth,ThesisScheduleController.getByMajor);
 router.get("/thesisSchedule/getAll",auth_admin,ThesisScheduleController.getAll);
 router.post("/thesisSchedule/insert",auth_admin, ThesisScheduleController.insert);
 router.put("/thesisSchedule/update/:thesisScheduleId",auth_admin,ThesisScheduleController.updateThesisSchedule);

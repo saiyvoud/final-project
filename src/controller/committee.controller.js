@@ -100,7 +100,6 @@ export default class CommitteeController {
         committeeID,
         committeeName,
         committeeDescription,
-        committeeChair,
       } = req.body;
       const committee = await Models.Committee.findByIdAndUpdate(
         committeeId,
@@ -108,7 +107,7 @@ export default class CommitteeController {
           committeeID,
           committeeName,
           committeeDescription,
-          committeeChair,
+      
         },
         { new: true }
       );
