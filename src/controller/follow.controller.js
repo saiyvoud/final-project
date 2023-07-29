@@ -8,7 +8,7 @@ import {
   SendError500,
   SendSuccess,
 } from "../service/response.js";
-import { ValidateFollow } from "../service/validate.js";
+import { ValidateDataFollow, ValidateFollow } from "../service/validate.js";
 
 export default class FollowController {
   static async getOne(req, res) {
@@ -77,15 +77,9 @@ export default class FollowController {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
       const { student_id, thesis_id, committee_id, schoolYear } = req.body;
-      if (
-        !mongoose.Types.ObjectId.isValid(thesis_id) ||
-        !mongoose.Types.ObjectId.isValid(committee_id) ||
-        !mongoose.Types.ObjectId.isValid(student_id)
-      ) {
-        return SendError404(
-          res,
-          EMessage.NotFound + " userId, thesisId , committeeId"
-        );
+      const checkValidate = await ValidateDataFollow(req.body);
+      if (!checkValidate) {
+        return SendError404(res, EMessage.NotFound + checkValidate.join(","));
       }
       const follow = await Models.Follow.create({
         student_id,

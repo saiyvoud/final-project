@@ -50,9 +50,9 @@ export default class CommitteeController {
         committeeID,
         committeeName,
         committeeDescription,
-        committeeChair,
+        user_id,
       } = req.body;
-      if (!mongoose.Types.ObjectId.isValid(committeeChair)) {
+      if (!mongoose.Types.ObjectId.isValid(user_id)) {
         return SendError404(res, EMessage.NotFound + " userId");
       }
       const committee = await Models.Committee.findOne({
@@ -65,7 +65,7 @@ export default class CommitteeController {
       }
 
       const role = await Models.User.findByIdAndUpdate(
-        committeeChair,
+        user_id,
         {
           role: Role.committee,
         },
@@ -78,7 +78,7 @@ export default class CommitteeController {
         committeeID,
         committeeName,
         committeeDescription,
-        committeeChair,
+        user_id,
       });
       return SendCreate(res, SMessage.Create, data);
     } catch (error) {

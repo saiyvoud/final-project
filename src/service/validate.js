@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export const ValidateData = (data) => {
   return Object.keys(data).filter((key) => !data[key]);
 };
@@ -51,8 +53,8 @@ export const ValidateUpdateMember = (member) => {
 };
 // ----------- committee ---------
 export const ValidateCommittee = (committee) => {
-  const { committeeID,committeeName,committeeDescription,committeeChair, } = committee;
-  return ValidateData({ committeeID,committeeName,committeeDescription,committeeChair, });
+  const { committeeID,committeeName,committeeDescription,user_id, } = committee;
+  return ValidateData({ committeeID,committeeName,committeeDescription,user_id, });
 };
 export const ValidateUpdateCommittee = (committee) => {
   const { committeeID,committeeName,committeeDescription, } = committee;
@@ -115,6 +117,20 @@ export const ValidateFollow = (follow) => {
   const { student_id,thesis_id,committee_id,schoolYear } = follow;
   return ValidateData({ student_id, thesis_id,committee_id,schoolYear });
 };
+export const ValidateDataFollow = async (follow)=>{
+  const {student_id,thesis_id,committee_id} = follow;
+  let arrNotFound = [];
+  if(!mongoose.Types.ObjectId.isValid(student_id)){
+    arrNotFound.push("student_id");
+  }
+  if(!mongoose.Types.ObjectId.isValid(thesis_id)){
+    arrNotFound.push("thesis_id");
+  }
+  if(!mongoose.Types.ObjectId.isValid(committee_id)){
+    arrNotFound.push("committee_id");
+  }
+  return arrNotFound;
+}
 // ---------- follow Detail -------
 export const ValidateFollowDetail = (followDetail) => {
   const { follow_id,appointment,presentNow,presentEdit, } = followDetail;

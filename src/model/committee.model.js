@@ -12,7 +12,7 @@ const committeeSchema = mongoose.Schema(
     committeeDescription: {
       type: String,
     },
-    committeeChair: {
+    user_id: {
       type: mongoose.Types.ObjectId,
       ref: "user",
       require: true,
