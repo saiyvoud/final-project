@@ -114,7 +114,7 @@ router.put("/major/update/:majorId",auth_admin,MajorController.updateMajor);
 router.put("/major/delete/:majorId",auth_admin,MajorController.deleteMajor);
 // ------------- follow ----------
 router.get("/follow/getOne/:follow_id",auth,FollowController.getOne);
-router.get("/follow/getByUser/:user_id",auth,FollowController.getByUserId);
+router.get("/follow/getByStudent/:student_id",auth,FollowController.getByStudentId);
 router.get("/follow/getByCommittee/:committee_id",auth,FollowController.getByCommitteeId);
 router.get("/follow/getAll",auth,FollowController.getAll);
 router.post("/follow/insert",auth, FollowController.insert);

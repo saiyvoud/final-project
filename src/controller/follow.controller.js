@@ -27,7 +27,7 @@ export default class FollowController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
-  static async getByUserId(req, res) {
+  static async getByStudentId(req, res) {
     try {
       const student_id = req.params.student_id;
       if (!mongoose.Types.ObjectId.isValid(student_id)) {
