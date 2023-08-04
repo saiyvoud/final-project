@@ -7,6 +7,7 @@ import {
   SendError404,
   SendError500,
   SendSuccess,
+  SendError401,
 } from "../service/response.js";
 import {
   ValidateSchedule,
@@ -36,10 +37,37 @@ export default class ScheduleController {
       if (!mongoose.Types.ObjectId.isValid(majorId)) {
         return SendError404(res, EMessage.NotFound + " majorId");
       }
+
       const schedule = await Models.Schedule.findOne({
         isActive: true,
         major_id: majorId,
-      });
+      })
+        .populate({
+          path: "thesis_id",
+          select: "thesisTitle member_id",
+          populate: {
+            path: "student_id member_id",
+            select: "studentName studentRoom memberName memberRoom",
+          },
+        })
+        .populate({
+          path: "major_id",
+          select: "nickname",
+        });
+      // for (let i = 0; i < schedule.thesis_id.length; i++) {
+      //   const student = await Models.Student.findById({
+      //     _id: schedule.thesis_id[i].student_id,
+      //   });
+      //   _studentList.push(student);
+      // }
+      //  const student = await Models.Student.findById({_id: schedule.thesis_id[]});
+      // if(!student){
+      //   return SendError401(res,EMessage.NotFound+"student_id")
+      // }
+      // const data = Object.assign(
+      //   JSON.parse(JSON.stringify(schedule)),
+      //   JSON.parse(JSON.stringify(_studentList)),
+      // )
       return SendSuccess(res, SMessage.getOne, schedule);
     } catch (error) {
       console.log(error);

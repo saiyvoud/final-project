@@ -32,7 +32,6 @@ export default class ThesisController {
         isActive: true,
       }).populate({
         path: "member_id student_id",
-        select: "studentID studentName studentRoom memberID memberName memberRoom"
       });
       return SendSuccess(res, SMessage.getAll, thesis);
     } catch (error) {
@@ -63,7 +62,6 @@ export default class ThesisController {
         member_id,
         thesisTitle,
         thesisDescription,
-
         thesisFile,
         proposalFile,
       });

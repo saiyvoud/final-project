@@ -5,6 +5,7 @@ const thesisSchema = mongoose.Schema(
   {
     scoringId: {
       type: Array,
+      ref: "scoring_id",
       default: "",
     },
     student_id: {
@@ -14,6 +15,7 @@ const thesisSchema = mongoose.Schema(
      },
      member_id:{
       type: String,
+      ref: "member_id",
       default: "",
      },
     // studentName: {

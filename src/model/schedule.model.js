@@ -16,7 +16,7 @@ const scheduleSchema = mongoose.Schema(
       type: Array,
       ref: "thesis",
       default: mongoose.Types.ObjectId,
-      unique: true,
+      //unique: true,
     },
     times: {
       type: Array,
