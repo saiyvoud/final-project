@@ -12,12 +12,15 @@ const thesisSchema = mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "student",
       //unique: true,
-     },
-     member_id:{
+    },
+    memberName: {
       type: String,
-      ref: "member_id",
       default: "",
-     },
+    },
+    memberRoom: {
+      type: String,
+      default: "",
+    },
     // studentName: {
     //   type: String,
     //   require: true,

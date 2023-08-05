@@ -44,30 +44,19 @@ export default class ScheduleController {
       })
         .populate({
           path: "thesis_id",
-          select: "thesisTitle member_id",
+          select: "thesisTitle ",
           populate: {
-            path: "student_id member_id",
-            select: "studentName studentRoom memberName memberRoom",
+            path: "student_id",
+            select: "studentName studentRoom",
           },
         })
         .populate({
           path: "major_id",
           select: "nickname",
         });
-      // for (let i = 0; i < schedule.thesis_id.length; i++) {
-      //   const student = await Models.Student.findById({
-      //     _id: schedule.thesis_id[i].student_id,
-      //   });
-      //   _studentList.push(student);
-      // }
-      //  const student = await Models.Student.findById({_id: schedule.thesis_id[]});
-      // if(!student){
-      //   return SendError401(res,EMessage.NotFound+"student_id")
-      // }
-      // const data = Object.assign(
-      //   JSON.parse(JSON.stringify(schedule)),
-      //   JSON.parse(JSON.stringify(_studentList)),
-      // )
+      if (!schedule) {
+        return SendError401(res, EMessage.NotFound + " majorId");
+      }
       return SendSuccess(res, SMessage.getOne, schedule);
     } catch (error) {
       console.log(error);
