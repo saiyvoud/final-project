@@ -5,7 +5,6 @@ const thesisSchema = mongoose.Schema(
   {
     scoringId: {
       type: Array,
-      ref: "scoring_id",
       default: "",
     },
     student_id: {

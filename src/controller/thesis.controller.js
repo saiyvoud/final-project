@@ -31,7 +31,7 @@ export default class ThesisController {
       const thesis = await Models.Thesis.find({
         isActive: true,
       }).populate({
-        path: "member_id student_id",
+        path: "student_id",
       });
       return SendSuccess(res, SMessage.getAll, thesis);
     } catch (error) {
@@ -47,7 +47,8 @@ export default class ThesisController {
       }
       const {
         student_id,
-        member_id,
+        memberName,
+        memberRoom,
         thesisTitle,
         thesisDescription,
         thesisFile,
@@ -59,7 +60,8 @@ export default class ThesisController {
 
       const thesis = await Models.Thesis.create({
         student_id,
-        member_id,
+        memberName,
+        memberRoom,
         thesisTitle,
         thesisDescription,
         thesisFile,
@@ -77,18 +79,15 @@ export default class ThesisController {
       if (!mongoose.Types.ObjectId.isValid(thesisId)) {
         return SendError404(res, EMessage.NotFound + " ThesisId");
       }
-      const { member_id } = req.body;
-      const member = await Models.Member.findOne({
-        _id: member_id,
-        isActive: true,
-      });
-      if (!member) {
-        return SendError404(res, EMessage.NotFound + "member");
+      const { memberName, memberRoom } = req.body;
+      if (!memberName || !memberRoom) {
+        return SendError400(res, "memberName,memberRoom is required!");
       }
       const thesis = await Models.Thesis.findByIdAndUpdate(
         thesisId,
         {
-          member_id,
+          memberName,
+          memberRoom,
         },
         { new: true }
       );
@@ -123,7 +122,6 @@ export default class ThesisController {
           scoringId,
           thesisTitle,
           thesisDescription,
-
           thesisFile,
           proposalFile,
           thesisStatus,
