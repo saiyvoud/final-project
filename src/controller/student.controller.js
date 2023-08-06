@@ -27,6 +27,22 @@ export default class StudentController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+  static async getByUser(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return SendError404(res, EMessage.NotFound);
+      }
+      const student = await Models.Student.findOne({
+        isActive: true,
+        user_id: userId,
+      });
+      return SendSuccess(res, SMessage.SelOne, student);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
   static async getAll(req, res) {
     try {
       const students = await Models.Student.find({

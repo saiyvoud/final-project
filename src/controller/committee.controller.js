@@ -29,6 +29,27 @@ export default class CommitteeController {
       return SendError500(res, EMessage.FaildServer, error);
     }
   }
+  static async getByUser(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return SendError404(res, EMessage.NotFound);
+      }
+      const checkRole = await Models.User.findById(userId);
+      if (checkRole.role == Role.committee) {
+        const committee = await Models.Committee.findOne({
+          isActive: true,
+          user_id: userId,
+        });
+        return SendSuccess(res, SMessage.SelOne, committee);
+      }
+      return SendError404(res, "Not match role");
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, EMessage.FaildServer, error);
+    }
+  }
+
   static async getAll(req, res) {
     try {
       const committee = await Models.Committee.find({
@@ -46,12 +67,8 @@ export default class CommitteeController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const {
-        committeeID,
-        committeeName,
-        committeeDescription,
-        user_id,
-      } = req.body;
+      const { committeeID, committeeName, committeeDescription, user_id } =
+        req.body;
       if (!mongoose.Types.ObjectId.isValid(user_id)) {
         return SendError404(res, EMessage.NotFound + " userId");
       }
@@ -96,18 +113,13 @@ export default class CommitteeController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.PleaseInput + validate.join(","));
       }
-      const {
-        committeeID,
-        committeeName,
-        committeeDescription,
-      } = req.body;
+      const { committeeID, committeeName, committeeDescription } = req.body;
       const committee = await Models.Committee.findByIdAndUpdate(
         committeeId,
         {
           committeeID,
           committeeName,
           committeeDescription,
-      
         },
         { new: true }
       );

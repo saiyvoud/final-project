@@ -30,6 +30,7 @@ router.put("/user/updateProfileImageToCloud/:userId",auth,UserController.updateP
 router.put("/user/updateProfileImageToServer/:userId",auth,UserController.updateProfileImageServer);
 // ---------- student -------
 router.get("/student/getOne/:studentId",auth,StudentController.getOne);
+router.get("/student/getByUser/:userId",auth,StudentController.getByUser);
 router.get("/student/getAll",auth,StudentController.getAll);
 router.post("/student/insert",auth, StudentController.insert);
 router.put("/student/update/:studentId",auth,StudentController.updateStudent);
@@ -42,6 +43,7 @@ router.put("/member/update/:memberId",auth,MemberController.updateMember);
 router.put("/member/delete/:memberId",auth,MemberController.deleteMember);
 // --------- committee ------
 router.get("/committee/getOne/:committeeId",auth,CommitteeController.getOne);
+router.get("/committee/getByUser/:userId",auth,CommitteeController.getByUser);
 router.get("/committee/getAll",auth_admin,CommitteeController.getAll);
 router.post("/committee/insert",auth, CommitteeController.insert);
 router.put("/committee/update/:committeeId",auth,CommitteeController.updateCommittee);

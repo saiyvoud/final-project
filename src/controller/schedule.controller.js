@@ -44,7 +44,7 @@ export default class ScheduleController {
       })
         .populate({
           path: "thesis_id",
-          select: "thesisTitle ",
+          select: "thesisTitle",
           populate: {
             path: "student_id",
             select: "studentName studentRoom",
@@ -68,10 +68,19 @@ export default class ScheduleController {
     try {
       const schedule = await Models.Schedule.find({
         isActive: true,
-      }).populate({
-        path: "thesis_id major_id",
-        select: "thesisTitle student_id",
-      });
+      })
+        .populate({
+          path: "thesis_id",
+          select: "thesisTitle",
+          populate: {
+            path: "student_id",
+            select: "studentName studentRoom",
+          },
+        })
+        .populate({
+          path: "major_id",
+          select: "nickname",
+        });
 
       return SendSuccess(res, SMessage.getAll, schedule);
     } catch (error) {
